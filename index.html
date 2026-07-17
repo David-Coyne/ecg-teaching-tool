@@ -39,7 +39,7 @@ body{display:flex;flex-direction:column}
 #hc{display:block;width:100%;height:100%;cursor:grab}
 #hc:active{cursor:grabbing}
 .clab{position:absolute;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.15);pointer-events:none;color:#dde}
-.hint{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:9px;color:rgba(255,255,255,.18);pointer-events:none}
+.hint{position:absolute;bottom:7px;left:8px;font-size:9px;color:rgba(255,255,255,.22);pointer-events:none}
 #errBox{display:none;position:absolute;inset:0;background:rgba(6,11,24,.95);color:#ff4466;font-size:12px;padding:20px;flex-direction:column;gap:8px;align-items:center;justify-content:center;text-align:center}
 .phases{display:flex;gap:7px;flex-wrap:wrap;padding:5px 11px;background:#0a1020;border-top:1px solid rgba(255,255,255,.07)}
 .ph{display:flex;align-items:center;gap:4px;font-size:10px;color:#3d4d6a;transition:color .1s}
@@ -48,6 +48,8 @@ body{display:flex;flex-direction:column}
 .hctrl{padding:7px 11px;background:#0a1020;border-top:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:5px}
 .hcrow{display:flex;align-items:center;gap:7px;font-size:10px;color:#8896b3}
 .hcrow label{min-width:52px}
+.ctr-btn{position:absolute;bottom:5px;right:8px;padding:3px 9px;background:rgba(6,11,24,0.75);border:1px solid rgba(255,255,255,.18);border-radius:5px;color:rgba(255,255,255,.55);font-size:9px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.4px;backdrop-filter:blur(4px);z-index:10;white-space:nowrap}
+.ctr-btn:hover{background:rgba(0,255,136,.12);border-color:rgba(0,255,136,.4);color:#00ff88}
 .rinfo{padding:8px 11px;background:#0a1020;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0;max-height:116px;overflow:auto}
 .riname{font-size:12px;font-weight:700;color:#00ff88;margin-bottom:2px}
 .ridesc{font-size:10px;color:#8896b3;line-height:1.5}
@@ -136,6 +138,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
       <canvas id="hc"></canvas>
       <div id="errBox"></div>
       <div class="hint">Drag to rotate &bull; Scroll to zoom</div>
+      <button class="ctr-btn" id="btnCentre" title="Reset rotation">&#8853; Centre</button>
     </div>
     <div class="phases">
       <div class="ph" id="phSA"><span class="d" style="border-color:#ffaa00"></span>SA</div>
@@ -145,10 +148,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
       <div class="ph" id="phT"><span class="d" style="border-color:#44ffaa"></span>T</div>
       <div class="ph" id="phDIA"><span class="d" style="border-color:#4466ff"></span>Dia</div>
     </div>
-    <div class="hctrl">
-      <div class="hcrow"><label>Rotate Y</label><input type="range" id="rotY" min="-180" max="180" value="0"></div>
-      <div class="hcrow"><label>Tilt X</label><input type="range" id="rotX" min="-60" max="60" value="0"></div>
-    </div>
+
     <div class="rinfo" id="rinfoBox">
       <div class="riname" id="riName">Normal Sinus Rhythm</div>
       <div class="ridesc" id="riDesc">Loading...</div>
@@ -277,9 +277,68 @@ function Trace(cid,wid,lead){this.cv=document.getElementById(cid);this.ww=docume
 Trace.prototype._resize=function(){var w=this.ww.clientWidth||1,h=this.ww.clientHeight||1,dpr=window.devicePixelRatio||1;this.cv.width=Math.round(w*dpr);this.cv.height=Math.round(h*dpr);this.cv.style.width=w+'px';this.cv.style.height=h+'px';this.ctx=this.cv.getContext('2d');this.ctx.scale(dpr,dpr);this.gcv.width=Math.round(w*dpr);this.gcv.height=Math.round(h*dpr);this.gctx=this.gcv.getContext('2d');this.gctx.scale(dpr,dpr);this.w=w;this.h=h;this._grid();};
 Trace.prototype._grid=function(){var c=this.gctx,w=this.w,h=this.h,x,y;c.clearRect(0,0,w,h);if(!S.showGrid)return;c.lineWidth=0.5;c.strokeStyle='rgba(200,60,60,0.14)';for(x=0;x<w;x+=4){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke();}for(y=0;y<h;y+=4){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}c.lineWidth=1;c.strokeStyle='rgba(200,60,60,0.36)';for(x=0;x<w;x+=20){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke();}for(y=0;y<h;y+=20){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}};
 Trace.prototype.push=function(v){this.buf[this.wh&(this.BUF-1)]=v;this.wh++;};
-Trace.prototype.draw=function(){var c=this.ctx,w=this.w,h=this.h;c.clearRect(0,0,w,h);if(S.showGrid)c.drawImage(this.gcv,0,0);var col=this.isArt?'#ff4466':'#00ff88',glow=this.isArt?'rgba(255,68,102,.4)':'rgba(0,255,136,.4)',midY=this.isArt?h*0.62:h*0.5,scY=this.isArt?h*0.65/200:h*0.38;c.strokeStyle='rgba(255,255,255,0.05)';c.lineWidth=1;c.beginPath();c.moveTo(0,midY);c.lineTo(w,midY);c.stroke();var si0=this.wh-w*SPP;c.shadowBlur=8;c.shadowColor=glow;c.strokeStyle=col;c.lineWidth=1.8;c.lineJoin='round';c.beginPath();var first=true,px,si,v2,py;for(px=0;px<w;px++){si=si0+px*SPP;if(si<0)continue;v2=(this.buf[si&(this.BUF-1)]+this.buf[(si+1)&(this.BUF-1)])*0.5;py=midY-v2*scY;if(first){c.moveTo(px,py);first=false;}else c.lineTo(px,py);}c.stroke();c.shadowBlur=0;var swX=(this.wh/SPP)%w;c.fillStyle='rgba(6,11,24,0.93)';c.fillRect(swX,0,28,h);c.strokeStyle='rgba(255,255,255,0.15)';c.lineWidth=1;c.beginPath();c.moveTo(swX,0);c.lineTo(swX,h);c.stroke();if(this.isArt){c.font='9px monospace';c.fillStyle='rgba(255,68,102,0.5)';c.fillText('120',3,midY-120*scY+3);c.fillText(' 80',3,midY-80*scY+3);}if(S.showAnnot&&!this.isArt)this._annot(c,w,midY,scY);};
+Trace.prototype.draw=function(){
+  var c=this.ctx,w=this.w,h=this.h;
+  c.clearRect(0,0,w,h);
+  if(S.showGrid)c.drawImage(this.gcv,0,0);
+  var col=this.isArt?'#ff4466':'#00ff88',
+      glow=this.isArt?'rgba(255,68,102,.45)':'rgba(0,255,136,.45)',
+      midY=this.isArt?h*0.62:h*0.5,
+      scY=this.isArt?h*0.65/200:h*0.38;
+  /* baseline */
+  c.strokeStyle='rgba(255,255,255,0.05)';c.lineWidth=1;
+  c.beginPath();c.moveTo(0,midY);c.lineTo(w,midY);c.stroke();
+  /* ---- bedside-monitor sweep ---- */
+  /* cursor x = current write-head position in pixels */
+  var curX=Math.floor((this.wh/SPP)%w);
+  /* erase zone ahead of cursor */
+  var eraseW=Math.min(34,w);
+  var eraseX=curX;
+  /* draw left segment: from (curX+eraseW) to (w-1) — the "older" part */
+  /* draw right segment: from 0 to curX — the "newer" part */
+  c.shadowBlur=9;c.shadowColor=glow;
+  c.strokeStyle=col;c.lineWidth=1.8;c.lineJoin='round';
+  var px,si,v2,py,first;
+  /* We plot pixel column px using the sample that was written at that position.
+     sample index for column px = wh - (curX - px)*SPP  (wrapping) */
+  function plotRange(x0,x1){
+    c.beginPath();first=true;
+    for(px=x0;px<=x1;px++){
+      /* how many pixels ago was this column written? */
+      var age=(curX-px+w)%w;
+      si=this.wh-1-Math.round(age*SPP);
+      if(si<0)continue;
+      v2=this.buf[si&(this.BUF-1)];
+      py=midY-v2*scY;
+      if(first){c.moveTo(px,py);first=false;}else c.lineTo(px,py);
+    }
+    c.stroke();
+  }
+  /* older segment (left of erase zone wrap-around) */
+  var eraseEnd=(eraseX+eraseW)%w;
+  if(eraseEnd<=eraseX){
+    /* erase zone wraps; draw middle strip */
+    if(eraseEnd<curX)plotRange.call(this,eraseEnd,curX);
+  } else {
+    /* draw from eraseEnd to w-1 */
+    if(eraseEnd<w)plotRange.call(this,eraseEnd,w-1);
+    /* draw from 0 to curX */
+    if(curX>0)plotRange.call(this,0,curX);
+  }
+  c.shadowBlur=0;
+  /* erase zone (dark gap ahead of cursor) */
+  c.fillStyle='#060b18';
+  if(eraseX+eraseW<=w){c.fillRect(eraseX,0,eraseW,h);}
+  else{c.fillRect(eraseX,0,w-eraseX,h);c.fillRect(0,0,eraseW-(w-eraseX),h);}
+  /* cursor line */
+  c.strokeStyle='rgba(255,255,255,0.18)';c.lineWidth=1;
+  c.beginPath();c.moveTo(curX,0);c.lineTo(curX,h);c.stroke();
+  /* ART scale labels */
+  if(this.isArt){c.font='9px monospace';c.fillStyle='rgba(255,68,102,0.5)';c.fillText('120',3,midY-120*scY+3);c.fillText(' 80',3,midY-80*scY+3);}
+  if(S.showAnnot&&!this.isArt)this._annot(c,w,midY,scY);
+};
 Trace.prototype._annot=function(c,w,midY,scY){var si0=this.wh-w*SPP,last=-50,px,si,v2,py;c.font='9px monospace';c.fillStyle='rgba(255,215,0,0.75)';for(px=5;px<w-10;px++){si=si0+px*SPP;if(si<0)continue;v2=this.buf[si&(this.BUF-1)];if(v2>0.4&&(px-last)>45){last=px;py=midY-v2*scY;c.fillText('R',px-3,py-6);c.strokeStyle='rgba(255,215,0,0.2)';c.lineWidth=1;c.beginPath();c.moveTo(px,midY-28);c.lineTo(px,midY+6);c.stroke();}}};
-Trace.prototype.redrawGrid=function(){this._grid();};var hSc,hCam,hRen,hGrp,hM={},hN={},hRX=0,hRY=0,drag=false,lmx=0,lmy=0,autoSpin=true;
+Trace.prototype.redrawGrid=function(){this._grid();};var hSc,hCam,hRen,hGrp,hM={},hN={},hRX=0,hRY=0,drag=false,lmx=0,lmy=0,autoSpin=false;
 var LDEFS=[{id:'lb-lv',txt:'LV',col:'#ff6688',pos:[-0.38,-0.55,0.62]},{id:'lb-rv',txt:'RV',col:'#ff5566',pos:[0.82,-0.38,0.36]},{id:'lb-la',txt:'LA',col:'#cc3355',pos:[-0.56,0.62,-0.26]},{id:'lb-ra',txt:'RA',col:'#bb2244',pos:[0.62,0.62,-0.18]},{id:'lb-ao',txt:'Ao',col:'#ff7744',pos:[0.02,1.50,0.04]},{id:'lb-pa',txt:'PA',col:'#5599ff',pos:[0.56,1.08,0.26]}];
 function mkHG(sx,sy,sz){var N=64,verts=[],idx=[],i,j,u,v,s3,cy,a;for(j=0;j<=N;j++){for(i=0;i<=N;i++){u=(i/N)*Math.PI;v=(j/N)*Math.PI*2;s3=Math.pow(Math.sin(u),3);cy=(13*Math.cos(u)-5*Math.cos(2*u)-2*Math.cos(3*u)-Math.cos(4*u))/16;verts.push(s3*Math.cos(v)*sx,cy*sy,s3*Math.sin(v)*sz);}}for(j=0;j<N;j++){for(i=0;i<N;i++){a=j*(N+1)+i;idx.push(a,a+1,a+N+1,a+1,a+N+2,a+N+1);}}var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setIndex(idx);g.computeVertexNormals();return g;}
 function mkTube(pts,r,ts,rs){var curve=new THREE.CatmullRomCurve3(pts.map(function(p){return new THREE.Vector3(p[0],p[1],p[2]);}));return new THREE.TubeGeometry(curve,ts||32,r,rs||8,false);}
@@ -333,10 +392,8 @@ function initHeart(){
   cv.addEventListener('wheel',function(e){hCam.position.z=Math.max(3.5,Math.min(11,hCam.position.z+e.deltaY*0.005));e.preventDefault();},{passive:false});
   cv.addEventListener('mousedown',function(e){drag=true;autoSpin=false;lmx=e.clientX;lmy=e.clientY;});
   cv.addEventListener('touchstart',function(e){drag=true;autoSpin=false;lmx=e.touches[0].clientX;lmy=e.touches[0].clientY;},{passive:true});
-  window.addEventListener('mousemove',function(e){if(!drag)return;hRY+=(e.clientX-lmx)*0.012;hRX+=(e.clientY-lmy)*0.012;lmx=e.clientX;lmy=e.clientY;document.getElementById('rotY').value=Math.round(THREE.MathUtils.radToDeg(hRY))%360;document.getElementById('rotX').value=Math.round(THREE.MathUtils.radToDeg(hRX));});
+  window.addEventListener('mousemove',function(e){if(!drag)return;hRY+=(e.clientX-lmx)*0.012;hRX+=(e.clientY-lmy)*0.012;lmx=e.clientX;lmy=e.clientY;});
   window.addEventListener('mouseup',function(){drag=false;});window.addEventListener('touchend',function(){drag=false;});
-  document.getElementById('rotY').addEventListener('input',function(e){hRY=THREE.MathUtils.degToRad(+e.target.value);autoSpin=false;});
-  document.getElementById('rotX').addEventListener('input',function(e){hRX=THREE.MathUtils.degToRad(+e.target.value);autoSpin=false;});
   window.addEventListener('resize',function(){var ww=document.getElementById('hwrap'),w2=ww.clientWidth||306,h2=ww.clientHeight||360;hCam.aspect=w2/h2;hCam.updateProjectionMatrix();hRen.setSize(w2,h2);});
 }
 var audioCtx=null,soundOn=false;
@@ -370,7 +427,6 @@ function toggleSound(){soundOn=!soundOn;if(soundOn)ensureAudio();var btn=documen
   if(hM.aorta){var aS2=1+vI*0.09;hM.aorta.scale.set(aS2,1,aS2);}
   var showCond=S.showCond&&type!=='vfib';
   ['lb','rb','lp1','lp2','rp1'].forEach(function(k){if(hN[k]){hN[k].material.opacity=showCond?(0.05+vI*0.88):0;hN[k].material.color.setHex(vI>0.45?0xaaffcc:0x44ffaa);}});
-  if(autoSpin)hRY+=0.005;
   hGrp.rotation.y=hRY+0.18;hGrp.rotation.x=hRX+0.10;
 }
 function updateLabels(){
@@ -441,6 +497,11 @@ window.addEventListener('load',function(){
   traces=[new Trace('c1','w1','I'),new Trace('c2','w2','II'),new Trace('c3','w3','III'),new Trace('c4','w4','ART')];
   initRhythm();initSettings();syncSliders();selRhythm(RHYTHMS[0]);
   try{if(typeof THREE==='undefined')throw new Error('Three.js CDN not loaded');initHeart();}catch(err){var eb=document.getElementById('errBox');eb.style.display='flex';eb.innerHTML='<strong>3D heart unavailable</strong><br><small>'+err.message+'</small><br><small>ECG traces still running.</small>';}
+  var cb=document.getElementById('btnCentre');
+  if(cb){
+    cb.addEventListener('mousedown',function(e){e.stopPropagation();});
+    cb.addEventListener('click',function(){hRX=0;hRY=0;drag=false;});
+  }
   requestAnimationFrame(loop);
 });
 }());
