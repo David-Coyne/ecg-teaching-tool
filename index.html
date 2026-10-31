@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-store">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1630">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>ECG Teaching Tool</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -52,7 +54,7 @@ body{display:flex;flex-direction:column}
 .hint{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(255,255,255,.22);pointer-events:none;z-index:5}
 #errBox{display:none;position:absolute;inset:0;background:rgba(6,11,24,.95);color:#ff4466;font-size:12px;padding:20px;flex-direction:column;gap:8px;align-items:center;justify-content:center;text-align:center}
 .hctrls{position:absolute;inset:0;z-index:30;pointer-events:none}
-.ctr-btn{position:absolute;bottom:8px;right:8px;padding:6px 12px;background:rgba(6,11,24,0.92);border:1px solid rgba(255,255,255,.28);border-radius:5px;color:rgba(255,255,255,.8);font-size:10px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.4px;backdrop-filter:blur(4px);z-index:31;white-space:nowrap;pointer-events:auto}
+.ctr-btn{position:absolute;top:8px;right:8px;padding:6px 12px;background:rgba(6,11,24,0.92);border:1px solid rgba(255,255,255,.28);border-radius:5px;color:rgba(255,255,255,.8);font-size:10px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.4px;backdrop-filter:blur(4px);z-index:31;white-space:nowrap;pointer-events:auto}
 .ctr-btn:hover{background:rgba(0,255,136,.12);border-color:rgba(0,255,136,.4);color:#00ff88}
 
 .phases{display:flex;gap:7px;flex-wrap:wrap;padding:5px 11px;background:#0a1020;border-top:1px solid rgba(255,255,255,.07)}
@@ -107,13 +109,13 @@ body{display:flex;flex-direction:column}
 .tn-pulse-icon{font-size:12px;color:#00ff88;animation:blink 1.2s infinite}
 .tn-limits{font-size:9px;color:#4a5a7a;line-height:1.1;text-align:right;font-family:'Space Mono',monospace}
 .tn-map{font-size:15px;color:#8896b3;font-weight:400}
-.rbar{flex-shrink:0;display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:6px 9px;background:#0e1630;border-top:1px solid rgba(255,255,255,.07)}
+.rbar{position:relative;flex-shrink:0;display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:6px 9px;background:#0e1630;border-top:1px solid rgba(255,255,255,.07)}
 .rlbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#3d4d6a;margin-right:3px;flex-shrink:0}
 .rbtn{padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.04);color:#8896b3;font-size:11px;cursor:pointer;transition:.18s}
 .rbtn:hover{background:rgba(255,255,255,.08);color:#e8edf8}
 .rbtn.active{background:rgba(0,255,136,.12);border-color:rgba(0,255,136,.45);color:#00ff88}
 .rbtn.crit.active{background:rgba(255,68,102,.12);border-color:rgba(255,68,102,.45);color:#ff4466}
-.quiz-on .isch{display:none}
+.quiz-on .isch,.quiz-on .imenu-btn,.quiz-on .rbar-tools{display:none}
 .quiz-on .rinfo{display:none}
 .quiz-on .rbtn.active{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.07);color:#8896b3}
 .rbtn.q-wrong{border-color:rgba(255,68,102,.55)!important;color:#ff6688!important;text-decoration:line-through}
@@ -140,7 +142,7 @@ body{display:flex;flex-direction:column}
 .quiz-on.quiz-done #rbar,.quiz-on.quiz-done #tbar{display:none}
 .tx-busy #tbar .rbtn{pointer-events:none;opacity:.65}
 #txFlash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:40;mix-blend-mode:screen}
-#txFx{position:absolute;top:8px;left:8px;right:8px;z-index:41;pointer-events:none;display:none;padding:8px 10px;border-radius:6px;background:rgba(6,11,24,.88);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(6px)}
+#txFx{position:absolute;top:8px;left:8px;right:88px;z-index:41;pointer-events:none;display:none;padding:8px 10px;border-radius:6px;background:rgba(6,11,24,.88);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(6px)}
 #txFx.show{display:block}
 #txFx.ok{border-color:rgba(0,255,136,.45)}
 #txFx.bad{border-color:rgba(255,68,102,.5)}
@@ -192,7 +194,20 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 .p12strip .p12cell{flex:1;height:100%}
 .p12row-content{flex:1;display:flex;align-items:stretch;min-height:0}
 .p12-num{width:110px;padding:2px 6px;margin-left:2px}
-.isch{padding:7px 11px;background:#0a1020;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.rbar-tools{display:flex;align-items:stretch;gap:4px;flex-shrink:0;min-width:0}
+.rbar.isch-open .rbar-tools{flex:1 1 auto;gap:0}
+.imenu-btn{padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.04);color:#8896b3;font-size:11px;cursor:pointer;white-space:nowrap;transition:.18s;flex-shrink:0;line-height:1.2}
+.imenu-btn:hover{background:rgba(255,255,255,.08);color:#e8edf8}
+.imenu-btn.on{background:rgba(255,68,102,.12);border-color:rgba(255,68,102,.45);color:#ff7a94}
+.rbar.isch-open .imenu-btn{border-color:rgba(255,68,102,.45);color:#ff8aa0;border-radius:20px 0 0 20px;border-right:none;background:rgba(255,68,102,.12)}
+.isch{display:none}
+.rbar.isch-open .isch{display:flex;flex:1 1 auto;min-width:0;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 10px;background:rgba(255,68,102,.08);border:1px solid rgba(255,68,102,.35);border-left:none;border-radius:0 20px 20px 0;touch-action:pan-x}
+.rbar.isch-open .isch::-webkit-scrollbar{display:none}
+.rbar.isch-open .isch-h{margin:0;flex:1 1 80px;min-width:56px}
+.rbar.isch-open .isch-h .ih{display:none}
+.rbar.isch-open .isch-row{margin:0;flex-wrap:nowrap;flex-shrink:0;gap:3px}
+.rbar.isch-open .isch-note{display:none}
+.rbar.isch-open .ibtn{padding:1px 7px;min-height:0;font-size:10px;flex-shrink:0}
 .isch-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
 .isch-h .ih{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#3d4d6a}
 .isch-sev{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
@@ -208,24 +223,209 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 .p12lbl.rec{color:#ffbb33!important;background:rgba(255,187,51,.14)}
 .p12isch{font-size:10px;color:#ff8aa0;font-family:'Space Mono',monospace}
 #ischBadge{position:absolute;top:8px;left:8px;z-index:32;pointer-events:none;display:none;font-size:9px;font-weight:700;padding:3px 7px;border-radius:4px;background:rgba(180,20,40,.88);color:#fff;letter-spacing:.3px;max-width:70%}
+.menu-btn,.mvit,.m-only,.sheet-hd,.rnow,.rmenu-btn{display:none}
+.rbtns{display:contents}
+.hquick{display:flex;gap:6px;align-items:center}
+.nav-scrim{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:55;border:0;padding:0}
+.orient-scrim{display:none;position:fixed;inset:0;z-index:94;border:0;padding:0;background:rgba(6,11,24,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.orient-scrim.show{display:block}
+body.orient-on .hdr,body.orient-on .main,body.orient-on .rbar,body.orient-on #tbar{filter:blur(8px);pointer-events:none}
+.orient-hint{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:96;width:min(260px,calc(100vw - 48px));aspect-ratio:1;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:22px 20px;background:#121c38;border:1px solid rgba(0,255,136,.32);border-radius:16px;box-shadow:0 18px 48px rgba(0,0,0,.5);text-align:center}
+.orient-hint.show{display:flex}
+.orient-hint p{margin:0;font-size:14px;line-height:1.4;color:#e8edf8}
+.orient-hint button{padding:8px 16px;min-height:40px;border-radius:8px;border:1px solid rgba(0,255,136,.4);background:rgba(0,255,136,.12);color:#00ff88;font-size:13px;font-weight:700;cursor:pointer}
+.orient-phone{width:64px;height:64px;display:flex;align-items:center;justify-content:center}
+.orient-phone-body{width:28px;height:46px;border:2.5px solid #00ff88;border-radius:6px;position:relative;animation:phone-rotate 2.2s ease-in-out infinite}
+.orient-phone-body:after{content:'';position:absolute;bottom:4px;left:50%;margin-left:-4px;width:8px;height:8px;border-radius:50%;background:#00ff88}
+@keyframes phone-rotate{0%,18%{transform:rotate(0)}40%,62%{transform:rotate(90deg)}82%,100%{transform:rotate(0)}}
+@media (orientation:landscape){
+  .orient-hint,.orient-hint.show,.orient-scrim,.orient-scrim.show{display:none!important}
+  body.orient-on .hdr,body.orient-on .main,body.orient-on .rbar,body.orient-on #tbar{filter:none;pointer-events:auto}
+}
+@media (orientation:landscape) and (max-height:560px){
+  .phases,.trII{display:none!important}
+}
+button,select,.tog,.ibtn,.rbtn,.hbtn,.qbtn,.ctr-btn,.hr-btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+
+@media (max-width:900px){
+  html,body{height:100%;height:100dvh}
+  .hdr{position:relative;z-index:80;flex-wrap:nowrap;gap:6px;padding:6px 10px;padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right));padding-top:max(6px,env(safe-area-inset-top))}
+  .hbrand{min-width:0}
+  .hbrand h1{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hbrand p{display:none}
+  .hicon{width:26px;height:26px;font-size:13px}
+  .nav-scrim{z-index:70}
+  .mvit{display:flex;flex-direction:column;line-height:1.1;margin-left:4px;min-width:0}
+  .mvit-hr{font-family:'Space Mono',monospace;font-size:12px;font-weight:800;color:#00ff88;white-space:nowrap}
+  .mvit-bp{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#ff6688;white-space:nowrap}
+  .hquick{margin-left:auto}
+  .menu-btn,.rmenu-btn{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#e8edf8;font-size:13px;font-weight:700;line-height:1;cursor:pointer;flex-shrink:0}
+  .menu-btn{font-size:22px}
+  .hnav{display:none;position:absolute;top:calc(100% + 4px);right:max(8px,env(safe-area-inset-right));flex-direction:column;align-items:stretch;gap:4px;min-width:210px;margin-left:0;padding:8px;background:#0e1630;border:1px solid rgba(255,255,255,.12);border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.45);z-index:60}
+  .hdr.menu-open .hnav{display:flex}
+  .hnav .hbtn{width:100%;text-align:left;padding:10px 12px;font-size:13px}
+  .hdr.menu-open ~ .nav-scrim,.nav-scrim.on{display:block}
+  .main{flex-direction:column}
+  .lp{position:relative;width:100%;flex:1.7 1 0;height:auto;min-height:0;z-index:1;border-right:none;border-bottom:1px solid rgba(255,255,255,.1);border-radius:0;transform:none;box-shadow:none;padding-bottom:0}
+  .sheet-hd,.hint,.rinfo,.trII,.phases{display:none}
+  .ibtn{min-height:32px;padding:6px 10px;font-size:11px}
+  .rp{min-height:0;flex:1.85 1 0;width:100%;display:flex;flex-direction:column}
+  .traces{flex:1;min-height:0;padding:0 8px;gap:0}
+  .tlabel{width:50px}
+  .lead-select{font-size:16px;width:48px;padding:4px 2px}
+  .tnum,.tnum-spacer,.tn-limits,.tn-pulse-icon,.vu{display:none}
+  .trow{flex:1 1 0;min-height:0;gap:6px;padding:0;border-bottom:none}
+  .trI{border-bottom:1px solid rgba(255,255,255,.08)}
+  .rbar{position:relative;z-index:80;flex-wrap:nowrap;overflow:hidden;gap:8px;padding:8px 10px;padding-bottom:max(8px,env(safe-area-inset-bottom));padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
+  .rnow{display:block;flex:1;min-width:0;font-size:13px;font-weight:700;color:#00ff88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+  .rbar.isch-open .rnow{display:none}
+  .rbar-tools{min-width:0}
+  .rbar.isch-open .rbar-tools{flex:1 1 auto;min-width:0}
+  .imenu-btn{min-height:40px;padding:8px 12px;font-size:12px}
+  .rbar.isch-open .imenu-btn{border-radius:20px 0 0 20px;border-right:none;min-height:40px}
+  .rbar.isch-open .isch{border-radius:0 20px 20px 0}
+  .rbar.isch-open .ibtn{min-height:0;padding:2px 6px;font-size:10px}
+  .rmenu-btn{flex-shrink:0}
+  #rbarLbl{display:none}
+  .quiz-on #rbarLbl{display:block}
+  .rbar.rhythms-open .rmenu-btn{border-color:rgba(0,255,136,.4);color:#00ff88}
+  .rbtns{display:none;position:absolute;left:8px;right:8px;bottom:calc(100% + 6px);grid-template-columns:1fr 1fr;gap:6px;padding:10px;background:#0e1630;border:1px solid rgba(255,255,255,.12);border-radius:10px;box-shadow:0 -12px 32px rgba(0,0,0,.45);max-height:55dvh;overflow:auto;z-index:90}
+  .rbar.rhythms-open .rbtns{display:grid}
+  .rbtn{min-height:40px;padding:8px 12px;font-size:12px}
+  #tbar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px;padding:8px 10px;padding-bottom:max(8px,env(safe-area-inset-bottom));scrollbar-width:none}
+  #tbar::-webkit-scrollbar{display:none}
+  .quiz-on .rnow,.quiz-on .rmenu-btn,.quiz-on .imenu-btn,.quiz-on .rbar-tools{display:none}
+  .quiz-on #rbar{flex-wrap:wrap;align-items:stretch}
+  .quiz-on .rbtns{display:grid;position:static;width:100%;flex:1 1 100%;max-height:32dvh;padding:0;border:none;background:none;box-shadow:none}
+  .quiz-on.quiz-tx #tbar{display:grid;grid-template-columns:1fr 1fr;overflow-x:hidden;overflow-y:auto;max-height:38dvh;align-items:stretch}
+  #tbar .rlbl,.quiz-on #rbar .rlbl{grid-column:1/-1;width:100%}
+  #tbar .rbtn{max-width:none;white-space:normal}
+  .qbar{padding:6px 10px}
+  .q-kicker{display:none}
+  .q-prompt{font-size:14px;margin-bottom:2px}
+  .q-scene{font-size:11px;max-height:3.2em;overflow:auto}
+  .q-meta{font-size:10px}
+  .q-fb{font-size:11px;min-height:0;margin-top:2px}
+  .q-copy{min-width:0}
+  .q-main{gap:8px}
+  .q-actions{width:100%}
+  .qbtn{flex:1;min-height:40px}
+  body.lead12 .lp{flex:0 0 28%}
+  body.lead12 .rp{flex:1 1 0}
+  .p12grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(6,minmax(68px,1fr));grid-template-areas:"i avr" "ii avl" "iii avf" "v1 v4" "v2 v5" "v3 v6";overflow:auto;-webkit-overflow-scrolling:touch}
+  .p12grid .p12cell:nth-child(1){grid-area:i}
+  .p12grid .p12cell:nth-child(2){grid-area:avr}
+  .p12grid .p12cell:nth-child(3){grid-area:v1}
+  .p12grid .p12cell:nth-child(4){grid-area:v4}
+  .p12grid .p12cell:nth-child(5){grid-area:ii}
+  .p12grid .p12cell:nth-child(6){grid-area:avl}
+  .p12grid .p12cell:nth-child(7){grid-area:v2}
+  .p12grid .p12cell:nth-child(8){grid-area:v5}
+  .p12grid .p12cell:nth-child(9){grid-area:iii}
+  .p12grid .p12cell:nth-child(10){grid-area:avf}
+  .p12grid .p12cell:nth-child(11){grid-area:v3}
+  .p12grid .p12cell:nth-child(12){grid-area:v6}
+  .p12strip{height:58px}
+  .p12-num{display:none}
+  .p12bar{padding:4px 8px}
+  .sp{width:100%;right:-100%;max-width:100%}
+  .sp.open{right:0}
+  #txFx{right:8px;top:8px}
+}
+@media (max-width:900px) and (orientation:landscape),
+       (orientation:landscape) and (max-height:500px){
+  .hdr{padding:2px 8px;padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right));padding-top:max(2px,env(safe-area-inset-top));gap:6px}
+  .hicon{width:22px;height:22px;font-size:11px}
+  .hfull,.pulse-dot,.hbrand p{display:none}
+  .hbrand h1{font-size:12px}
+  .mvit{flex-direction:row;align-items:baseline;gap:8px;margin-left:2px}
+  .mvit-hr{font-size:13px}
+  .mvit-bp{font-size:12px}
+  .hbtn{padding:4px 8px;font-size:10px;color:#d5deee;border-color:rgba(255,255,255,.18)}
+  .hquick{gap:4px}
+  .menu-btn,.rmenu-btn{width:32px;height:32px}
+  .imenu-btn{min-height:32px;padding:5px 10px;font-size:11px}
+  .rbar.isch-open .imenu-btn{min-height:32px}
+  .rbar.isch-open .ibtn{min-height:0;padding:1px 6px}
+  .main{flex-direction:row}
+  .lp{flex:0 0 36%;width:36%;height:auto;min-height:0;border-bottom:none;border-right:1px solid rgba(255,255,255,.1)}
+  .hwrap{padding:0}
+  .phases,.rinfo,.hint,.sheet-hd,.tsub,.trII{display:none!important}
+  .rp{flex:1 1 0;width:auto;min-width:0}
+  .traces{padding:0 4px 0 6px;gap:0}
+  .trow{padding:0;gap:4px}
+  .trI,.trART{flex:1 1 0;min-height:0}
+  .tlabel{width:42px}
+  .lead-select{width:42px;font-size:13px;padding:2px 0}
+  .ctr-btn{top:6px;right:6px;padding:4px 8px;font-size:9px}
+  .rbar{padding:3px 8px;padding-bottom:max(3px,env(safe-area-inset-bottom));padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+  .rnow{font-size:12px}
+  .rbtn{min-height:32px;padding:5px 8px;font-size:11px}
+  .rbtns{grid-template-columns:repeat(3,1fr);max-height:68dvh}
+  body.lead12 .lp{flex:0 0 22%;width:22%}
+  .qbar{padding:2px 8px}
+  .q-main{flex-wrap:nowrap;align-items:center;gap:8px}
+  .q-prompt{font-size:13px;margin-bottom:0}
+  .q-scene{max-height:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+  .q-meta{margin:0;font-size:10px}
+  .q-fb{min-height:0;margin:0;font-size:10px}
+  .q-fb.info{display:none}
+  .q-actions{width:auto;flex-shrink:0}
+  .qbtn{flex:0 1 auto;min-height:30px;min-width:80px;padding:4px 10px}
+  .quiz-on .rbtns{grid-template-columns:repeat(5,1fr);max-height:none}
+  .quiz-on.quiz-tx #tbar{grid-template-columns:repeat(4,1fr);max-height:none}
+  .p12grid{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,minmax(0,1fr));grid-template-areas:"i avr v1 v4" "ii avl v2 v5" "iii avf v3 v6";overflow:hidden}
+  .p12strip{height:40px}
+  .p12bar{padding:2px 6px}
+  .p12lbl{font-size:9px;padding:1px 4px}
+  #txFx{top:6px;right:6px;left:6px;padding:6px 8px}
+}
+@media (max-width:480px){
+  .hfull{display:none}
+  .pulse-dot{display:none}
+  .rbar.isch-open .imenu-btn{padding:8px 8px;font-size:11px}
+}
+@media (max-width:380px){
+  .rbar.isch-open .isch-h{display:none}
+  .rbar.isch-open .imenu-btn{padding:6px 7px;font-size:10px}
+}
 </style>
 </head>
 <body>
-<header class="hdr">
-  <div class="hbrand"><div class="hicon">&#9829;</div><div><h1>ECG Teaching Tool</h1><p>Healthcare Professional Edition</p></div></div>
+<header class="hdr" id="hdr">
+  <div class="hbrand"><div class="hicon">&#9829;</div><div><h1>ECG<span class="hfull"> Teaching Tool</span></h1><p>Healthcare Professional Edition</p></div></div>
   <div class="pulse-dot"></div>
-  <div class="hnav">
+  <div class="mvit" id="mvit" aria-hidden="true">
+    <span class="mvit-hr"><b id="mHRv">70</b></span>
+    <span class="mvit-bp" id="mBPv">120/80</span>
+  </div>
+  <nav class="hnav" id="hnav">
     <button type="button" class="hbtn" id="btnPause">&#9646;&#9646; Pause</button>
     <button type="button" class="hbtn" id="btnSound">&#128266; Sound</button>
     <button type="button" class="hbtn" id="btnAnnot">Annot</button>
     <button type="button" class="hbtn" id="btnGrid">Grid</button>
+    <button type="button" class="hbtn" id="btnSettings">&#9881; Settings</button>
+  </nav>
+  <div class="hquick">
     <button type="button" class="hbtn" id="btn12lead">12 Lead</button>
     <button type="button" class="hbtn" id="btnQuiz">Quiz</button>
-    <button type="button" class="hbtn" id="btnSettings">&#9881; Settings</button>
+    <button type="button" class="menu-btn" id="btnMenu" aria-label="Open menu" aria-expanded="false" aria-controls="hnav">&#9776;</button>
   </div>
 </header>
+<button type="button" class="nav-scrim" id="navScrim" aria-label="Close"></button>
+<button type="button" class="orient-scrim" id="orientScrim" aria-label="Dismiss" hidden></button>
+<div class="orient-hint" id="orientHint" role="dialog" aria-modal="true" aria-labelledby="orientHintTxt" hidden>
+  <div class="orient-phone" aria-hidden="true"><div class="orient-phone-body"></div></div>
+  <p id="orientHintTxt">Rotate to landscape for the best view of the heart and traces.</p>
+  <button type="button" id="orientHintOk">Got it</button>
+</div>
 <div class="main">
-  <div class="lp">
+  <div class="lp" id="lp">
+    <div class="sheet-hd">
+      <span>3D Heart</span>
+      <button type="button" class="sclose" id="btnHeartClose" aria-label="Close heart view">&#10005;</button>
+    </div>
     <div class="hwrap" id="hwrap">
       <canvas id="hc"></canvas>
       <div id="errBox"></div>
@@ -249,31 +449,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
       <div class="ph" id="phT"><span class="d" style="border-color:#44ffaa"></span>T</div>
       <div class="ph" id="phDIA"><span class="d" style="border-color:#4466ff"></span>Dia</div>
     </div>
-    <div class="isch" id="ischBox">
-      <div class="isch-h">
-        <span class="ih">Ischaemia</span>
-        <div class="isch-sev">
-          <input type="range" id="sIsch" min="30" max="100" value="80" title="Severity">
-          <span class="sval" id="dIsch">80%</span>
-        </div>
-      </div>
-      <div class="isch-row" id="ischPatRow">
-        <button type="button" class="ibtn pat on" data-pat="stemi">STEMI</button>
-        <button type="button" class="ibtn pat" data-pat="nste">NSTE</button>
-      </div>
-      <div class="isch-row" id="ischTerrRow">
-        <button type="button" class="ibtn on" data-terr="off">Off</button>
-        <button type="button" class="ibtn" data-terr="lad" title="Left anterior descending">LAD</button>
-        <button type="button" class="ibtn" data-terr="rca" title="Right coronary artery">RCA</button>
-        <button type="button" class="ibtn" data-terr="lcx" title="Left circumflex">LCx</button>
-        <button type="button" class="ibtn" data-terr="lm" title="Left main coronary artery">LM</button>
-      </div>
-      <div class="isch-note" id="ischNote">Off — normal ST/T in all leads. Pick a coronary artery to apply regional ischaemia.</div>
-    </div>
-
     <div class="rinfo" id="rinfoBox">
       <div id="riTeach">
-        <div class="riname" id="riName">Normal Sinus Rhythm</div>
+        <div class="riname" id="riName">Sinus Rhythm</div>
         <div class="ridesc" id="riDesc">Loading...</div>
         <div class="ritags" id="riTags"></div>
       </div>
@@ -375,7 +553,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
     </div>
     <div class="panel12" id="panel12">
       <div class="p12bar">
-        <span class="p12rname" id="p12rname">Normal Sinus Rhythm</span>
+        <span class="p12rname" id="p12rname">Sinus Rhythm</span>
         <span class="p12isch" id="p12isch"></span>
       </div>
       <div class="p12grid">
@@ -419,7 +597,36 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
     </div>
   </div>
 </div>
-<div class="rbar" id="rbar"><span class="rlbl" id="rbarLbl">Rhythm</span></div>
+<div class="rbar" id="rbar">
+  <span class="rlbl" id="rbarLbl">Rhythm</span>
+  <span class="rnow" id="rNow">Sinus Rhythm</span>
+  <div class="rbtns" id="rbtns"></div>
+  <div class="rbar-tools">
+    <button type="button" class="imenu-btn" id="btnIsch" aria-label="Ischaemia" aria-expanded="false" aria-controls="ischBox">Ischaemia</button>
+    <div class="isch" id="ischBox">
+      <div class="isch-h">
+        <span class="ih">Severity</span>
+        <div class="isch-sev">
+          <input type="range" id="sIsch" min="30" max="100" value="80" title="Severity">
+          <span class="sval" id="dIsch">80%</span>
+        </div>
+      </div>
+      <div class="isch-row" id="ischPatRow">
+        <button type="button" class="ibtn pat on" data-pat="stemi">STEMI</button>
+        <button type="button" class="ibtn pat" data-pat="nste">NSTEMI</button>
+      </div>
+      <div class="isch-row" id="ischTerrRow">
+        <button type="button" class="ibtn on" data-terr="off">Off</button>
+        <button type="button" class="ibtn" data-terr="lad" title="Left anterior descending">LAD</button>
+        <button type="button" class="ibtn" data-terr="rca" title="Right coronary artery">RCA</button>
+        <button type="button" class="ibtn" data-terr="lcx" title="Left circumflex">LCx</button>
+        <button type="button" class="ibtn" data-terr="lm" title="Left main coronary artery">LM</button>
+      </div>
+      <div class="isch-note" id="ischNote">Off — normal ST/T in all leads. Pick a coronary artery to apply regional ischaemia.</div>
+    </div>
+  </div>
+  <button type="button" class="rmenu-btn" id="btnRhythms" aria-label="All rhythms" aria-expanded="false" aria-controls="rbtns">All</button>
+</div>
 <div class="rbar tbar" id="tbar"><span class="rlbl" id="tbarLbl">Treat</span></div>
 <div class="sov" id="sov"></div>
 <div class="sp" id="sp">
@@ -448,7 +655,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 <script>(function(){
 'use strict';
 var RHYTHMS=[
-{id:'nsr',name:'Normal Sinus',bpm:70,pAmp:1,pr:160,qrs:80,qt:400,qrsAmp:1,st:0,tAmp:1,type:'sinus',irr:false,crit:false,desc:'Regular P waves 60-100 bpm, normal PR 120-200 ms, narrow QRS. Normal SA node origin with intact AV and His-Purkinje conduction.',tags:['Rate: 60-100','PR: 120-200 ms','QRS: <120 ms','Regular']},
+{id:'nsr',name:'Sinus Rhythm',bpm:70,pAmp:1,pr:160,qrs:80,qt:400,qrsAmp:1,st:0,tAmp:1,type:'sinus',irr:false,crit:false,desc:'Regular P waves 60-100 bpm, normal PR 120-200 ms, narrow QRS. Normal SA node origin with intact AV and His-Purkinje conduction.',tags:['Rate: 60-100','PR: 120-200 ms','QRS: <120 ms','Regular']},
 {id:'brady',name:'Sinus Brady',bpm:42,pAmp:1,pr:160,qrs:80,qt:480,qrsAmp:1,st:0,tAmp:1,type:'sinus',irr:false,crit:false,desc:'SA node fires <60/min. Normal P-QRS morphology. Causes: athletes, vagal tone, hypothyroidism, beta-blockers, inferior MI.',tags:['Rate: <60','Bradycardia','Normal morphology']},
 {id:'tachy',name:'Sinus Tachy',bpm:130,pAmp:1,pr:140,qrs:80,qt:320,qrsAmp:1,st:0,tAmp:0.8,type:'sinus',irr:false,crit:false,desc:'Rate >100/min, normal P-QRS. Causes: fever, pain, sepsis, hypovolaemia, PE, anaemia, anxiety.',tags:['Rate: >100','PR: Shortened','Tachycardia']},
 {id:'svt',name:'SVT',bpm:180,pAmp:0.35,pr:80,qrs:70,qt:260,qrsAmp:1,st:0,tAmp:0.7,type:'svt',irr:false,crit:false,desc:'Regular narrow-complex tachycardia 150-220/min. P waves buried in the QRS or retrograde (pseudo-r in V1, pseudo-S inferior). Sudden onset/offset. Treat with vagal manoeuvres or adenosine.',tags:['Rate: 150-220','Narrow QRS','Regular','P buried / retrograde']},
@@ -465,7 +672,7 @@ var RHYTHMS=[
 ];
 var S={rhythm:RHYTHMS[0],bpm:70,pr:160,qrs:80,qt:400,st:0,tAmp:1,pAmp:1,gain:10,speed:25,showGrid:false,showAnnot:false,showCond:true,masterIdx:0,isch:{terr:'off',pat:'stemi',sev:0.8}};
 var QUIZ_LEN=10;
-var quiz={on:false,phase:'id',case:null,answer:null,left:2,revealed:false,correct:0,asked:0,lastId:null,prev12:false,deck:[],i:0,idCorrect:0,txCorrect:0};
+var quiz={on:false,phase:'id',case:null,answer:null,left:2,revealed:false,correct:0,asked:0,lastId:null,prev12:false,deck:[],i:0,idCorrect:0,txCorrect:0,view12:null};
 var fx={active:false,timers:[],flash:0,flatUntil:0,cpr:false,pace:false,pci:false,vigor:1,tint:0,arrest:null,vitals:null,t0:0,pciFrom:0,pciTo:0,lastIsch:0,locked:false,cprN:-1};
 var ISCH_TERR={
   lad:{name:'LAD',artery:'LAD',territory:'Anterior',view:['V2','III'],
@@ -991,6 +1198,7 @@ function updateVitals(eff){
   if(!hrEditing){
     var v=document.getElementById('vHRv');if(v)v.textContent=hr;
     var v12=document.getElementById('vHRv12');if(v12)v12.textContent=hr;
+    var vm=document.getElementById('mHRv');if(vm)vm.textContent=hr;
   }
   var bpEl=document.getElementById('vBPv');
   if(bpEl){
@@ -1000,6 +1208,8 @@ function updateVitals(eff){
       bpEl.innerHTML=sys+'/'+dia+' <span class="tn-map">('+map+')</span>';
     }
   }
+  var mbp=document.getElementById('mBPv');
+  if(mbp)mbp.textContent=arrest?'UNMEAS':(sys+'/'+dia);
   var bp12=document.getElementById('vBPv12');
   if(bp12){
     if(arrest){bp12.textContent='UNMEAS';}
@@ -1090,7 +1300,7 @@ function updateIschUI(){
   if(t)txt=pat==='nste'?t.nste:t.desc;
   if(note)note.innerHTML=txt;
   var p12i=document.getElementById('p12isch');
-  if(p12i)p12i.textContent=t?((pat==='nste'?'NSTE':'STEMI')+' · '+t.name):'';
+  if(p12i)p12i.textContent=t?((pat==='nste'?'NSTEMI':'STEMI')+' · '+t.name):'';
   var badge=document.getElementById('ischBadge');
   if(badge){
     if(t){badge.style.display='block';badge.textContent=t.artery+' · '+t.territory;}
@@ -1110,6 +1320,11 @@ function updateIschUI(){
   });
   var d=document.getElementById('dIsch');
   if(d)d.textContent=Math.round(cfg.sev*100)+'%';
+  var ib=document.getElementById('btnIsch');
+  if(ib){
+    ib.classList.toggle('on',!!t);
+    ib.setAttribute('aria-pressed',t?'true':'false');
+  }
 }
 function hydrateTraces(n){
   n=n||900;
@@ -1136,7 +1351,7 @@ function show12Lead(){
     }
     return;
   }
-  toggle12Lead();
+  toggle12Lead(false);
   setTimeout(function(){
     if(!t12Inited)init12Lead();
     else{
@@ -1148,7 +1363,7 @@ function show12Lead(){
 }
 function set12Lead(on){
   if(on)show12Lead();
-  else if(show12)toggle12Lead();
+  else if(show12)toggle12Lead(false);
 }
 function applyIsch(opts){
   if(opts.terr!=null)S.isch.terr=opts.terr;
@@ -1160,7 +1375,7 @@ function applyIsch(opts){
       setLeadTrace(0,t.view[0]);
       setLeadTrace(1,t.view[1]);
     }
-    show12Lead();
+    if(!(opts&&opts.keepView))show12Lead();
   }else if(opts.terr==='off'){
     setLeadTrace(0,'I');
     setLeadTrace(1,'II');
@@ -1189,7 +1404,28 @@ function initIsch(){
   };
 }
 function init12Lead(){if(t12Inited)return;traces12=T12DEFS.map(function(d){return new Trace(d.cid,d.wid,d.lead);});traces12art=new Trace('cv12_ART','p12w_ART','ART');t12Inited=true;traces12.forEach(function(tr){tr._resize();});traces12art._resize();hydrateTraces(1600);}
-function toggle12Lead(){show12=!show12;var panel=document.getElementById('panel12'),btn=document.getElementById('btn12lead'),tr=document.getElementById('traces3');if(show12){tr.style.display='none';panel.classList.add('open');btn.classList.add('on');btn.textContent='\u25C4 3 Lead';if(!t12Inited)requestAnimationFrame(function(){requestAnimationFrame(init12Lead);});else hydrateTraces(200);}else{panel.classList.remove('open');tr.style.display='';btn.classList.remove('on');btn.textContent='12 Lead';}}
+function toggle12Lead(user){
+  show12=!show12;
+  var panel=document.getElementById('panel12'),btn=document.getElementById('btn12lead'),tr=document.getElementById('traces3');
+  if(show12){
+    tr.style.display='none';
+    panel.classList.add('open');
+    btn.classList.add('on');
+    btn.textContent='\u25C4 3 Lead';
+    if(!t12Inited)requestAnimationFrame(function(){requestAnimationFrame(init12Lead);});
+    else hydrateTraces(200);
+  }else{
+    panel.classList.remove('open');
+    tr.style.display='';
+    btn.classList.remove('on');
+    btn.textContent='12 Lead';
+  }
+  if(quiz.on){
+    if(user!==false)quiz.view12=show12;
+  }
+  document.body.classList.toggle('lead12',!!show12);
+  window.dispatchEvent(new Event('resize'));
+}
 var TX_KIND={drug:'Drug',shock:'Shock',proc:'Procedure',action:'Action'};
 var TREATMENTS=[
   {id:'cpr',name:'Start / continue CPR',kind:'action'},
@@ -1214,109 +1450,109 @@ var TREAT_MAP={};
 TREATMENTS.forEach(function(t){TREAT_MAP[t.id]=t;});
 var QUIZ_CASES=[
   {id:'vf',rhythm:'vf',arrest:true,
-    scene:'Unresponsive adult. No pulse. Monitor shows this rhythm.',
+    scene:'67-year-old found collapsed in the hallway. Bystander CPR underway. Unresponsive, no pulse, occasional agonal gasp.',
     txPrompt:'Immediate treatment?',
     txCorrect:['defib'],
     txOpts:['defib','cpr','cardiovert','adrenaline','amiodarone','atropine','adenosine','observe'],
     txWhy:'VF is a shockable cardiac arrest rhythm. Deliver an unsynchronised defibrillation now and continue high-quality CPR. Synchronised cardioversion cannot lock onto VF. Adrenaline is given after the second shock; amiodarone after the third.'},
   {id:'vt-uns',rhythm:'vt',vitals:{sys:76,dia:54},
-    scene:'Pulse present. BP 76/54. Drowsy, cold, chest pain.',
+    scene:'58-year-old man, previous infarct, sudden crushing tightness and a grey, clammy look. Drowsy, cool peripheries. Pulse present. BP 76/54.',
     txPrompt:'This patient has adverse features. Immediate treatment?',
     txCorrect:['cardiovert'],
     txOpts:['cardiovert','defib','amiodarone','adenosine','vagal','adrenaline','pci','observe'],
     txWhy:'Wide-complex tachycardia with a pulse and shock is unstable VT. Treat with synchronised cardioversion. Unsynchronised defibrillation is for pulseless VT/VF. Amiodarone is for stable VT.'},
   {id:'svt',rhythm:'svt',vitals:{sys:118,dia:78},
-    scene:'Palpitations, alert, BP 118/78. Regular narrow-complex tachycardia.',
+    scene:'26-year-old woman, palpitations that started like a switch while she was at her desk. Alert, a little anxious, no pain or breathlessness. BP 118/78.',
     txPrompt:'First-line treatment while stable?',
     txCorrect:['vagal','adenosine'],
     txOpts:['vagal','adenosine','cardiovert','defib','amiodarone','metoprolol','atropine','observe'],
     txWhy:'Stable SVT: vagal manoeuvres first, then adenosine 6 mg rapid IV if vagal fails. Cardioversion is reserved for adverse features (shock, syncope, ischaemia, heart failure).'},
   {id:'brady',rhythm:'brady',vitals:{sys:72,dia:40},
-    scene:'Dizzy, diaphoretic, BP 72/40. Pulse present.',
+    scene:'74-year-old on a beta-blocker, found on the bathroom floor after standing. Dizzy, sweating, nauseated. Pulse present. BP 72/40.',
     txPrompt:'Immediate treatment?',
     txCorrect:['atropine'],
     txOpts:['atropine','pace','adrenaline','fluids','observe','adenosine','cardiovert','defib'],
     txWhy:'Symptomatic sinus bradycardia: atropine 600 mcg IV, repeat to 3 mg. If atropine fails, use transcutaneous pacing or an adrenaline infusion. Pacing is first-line when there is a high risk of asystole (Mobitz II, complete heart block).'},
   {id:'chb',rhythm:'chb',vitals:{sys:78,dia:48},
-    scene:'Syncope. BP 78/48. Complete AV dissociation, wide QRS escape.',
+    scene:'82-year-old with several blackouts this week. Collapsed in the kitchen this morning. Slow to rouse, pale. BP 78/48.',
     txPrompt:'Immediate treatment?',
     txCorrect:['pace'],
     txOpts:['pace','atropine','adrenaline','observe','fluids','cardiovert','defib','pci'],
     txWhy:'Complete heart block with a wide escape is infra-Hisian. Atropine is often ineffective. Start transcutaneous pacing and arrange a permanent pacemaker. An adrenaline infusion can bridge if pacing is delayed.'},
   {id:'m2',rhythm:'m2',
-    scene:'Recurrent near-syncope. Fixed PR with dropped QRS complexes.',
+    scene:'71-year-old man, three near-faints this week on the stairs. Alert now, no chest pain. BP 118/70.',
     txPrompt:'Most appropriate treatment?',
     txCorrect:['pace'],
     txOpts:['pace','atropine','observe','adrenaline','pci','fluids','adenosine','defib'],
     txWhy:'Mobitz II is infra-Hisian and can deteriorate to complete heart block. Temporary pacing (and usually a permanent pacemaker) is required. Atropine is unreliable.'},
   {id:'m1',rhythm:'m1',vitals:{sys:124,dia:72},
-    scene:'Asymptomatic. BP 124/72. Progressive PR lengthening with a dropped beat.',
+    scene:'23-year-old endurance runner, pre-op ECG before a knee reconstruction. Feels completely well. BP 124/72.',
     txPrompt:'Most appropriate treatment?',
     txCorrect:['observe'],
     txOpts:['observe','atropine','pace','adrenaline','pci','fluids','adenosine','cardiovert'],
     txWhy:'Mobitz I (Wenckebach) is usually AV-nodal and well tolerated. Observe and treat reversible causes. Atropine or pacing only if there are adverse features.'},
   {id:'avb1',rhythm:'avb1',
-    scene:'Incidental finding. PR 280 ms, every P conducts. Patient well.',
+    scene:'62-year-old on diltiazem for hypertension, clinic visit for a medication review. No dizziness, no syncope. BP 132/78.',
     txPrompt:'Most appropriate treatment?',
     txCorrect:['observe'],
     txOpts:['observe','atropine','pace','adenosine','pci','fluids','metoprolol','cardiovert'],
     txWhy:'First-degree AV block with a conducting P for every QRS is usually benign. No pacing. Review drugs (beta-blockers, calcium-channel blockers, digoxin).'},
   {id:'nsr',rhythm:'nsr',
-    scene:'Routine monitoring. Patient comfortable, normal vital signs.',
+    scene:'34-year-old, pre-employment medical. Comfortable, talking, eating a sandwich. Observations unremarkable.',
     txPrompt:'Most appropriate treatment?',
     txCorrect:['observe'],
     txOpts:['observe','atropine','adenosine','cardiovert','defib','pci','fluids','amiodarone'],
     txWhy:'Normal sinus rhythm needs no antiarrhythmic treatment. Do not shock, pace, or give adenosine to a normal tracing.'},
   {id:'tachy',rhythm:'tachy',
-    scene:'Febrile, volume down. Regular narrow complex 130/min with P waves before each QRS.',
+    scene:'22-year-old, two days of fever, vomiting and almost no oral intake. Warm, dry mouth, thirsty. BP 108/64.',
     txPrompt:'Most appropriate treatment?',
     txCorrect:['observe','fluids'],
     txOpts:['observe','fluids','adenosine','vagal','cardiovert','metoprolol','atropine','defib'],
     txWhy:'Sinus tachycardia is a sign, not a rhythm to abolish. Treat the cause (fever, pain, hypovolaemia, PE, anaemia). Adenosine and cardioversion are wrong.'},
   {id:'af-uns',rhythm:'afib',bpm:160,vitals:{sys:68,dia:44},
-    scene:'Acute pulmonary oedema, BP 68/44, irregularly irregular tachycardia.',
+    scene:'79-year-old woken by sudden breathlessness. Sitting bolt upright, pink frothy sputum, sweaty. BP 68/44.',
     txPrompt:'Immediate treatment?',
     txCorrect:['cardiovert'],
     txOpts:['cardiovert','defib','metoprolol','heparin','adenosine','vagal','amiodarone','observe'],
     txWhy:'Unstable AF (shock or pulmonary oedema) is treated with synchronised cardioversion. Rate-control drugs wait until the patient is stable. Unsynchronised defibrillation is for VF/pulseless VT.'},
   {id:'af-stable',rhythm:'afib',
-    scene:'New AF, rate ~90, alert, BP 128/78, symptom onset 3 hours ago.',
+    scene:'68-year-old, fluttery palpitations for about three hours after a wedding. Alert, speaking in sentences. BP 128/78.',
     txPrompt:'Most appropriate next step?',
     txCorrect:['heparin','observe'],
     txOpts:['heparin','observe','cardiovert','defib','adenosine','vagal','atropine','pci'],
     txWhy:'Stable AF: assess stroke risk and anticoagulate. If onset is clearly under 48 h, elective cardioversion can follow. Do not unsynchronised-shock AF. Adenosine does not terminate AF.'},
   {id:'aflut',rhythm:'aflut',bpm:150,vitals:{sys:70,dia:48},
-    scene:'Chest pain, BP 70/48. Regular tachycardia with flutter waves.',
+    scene:'64-year-old, sudden heavy chest tightness while walking the dog. Pale, clammy, still talking. BP 70/48.',
     txPrompt:'Immediate treatment?',
     txCorrect:['cardiovert'],
     txOpts:['cardiovert','defib','metoprolol','adenosine','vagal','heparin','amiodarone','observe'],
     txWhy:'Unstable atrial flutter is highly sensitive to synchronised cardioversion, often at low energy. Unsynchronised defibrillation is not used when a pulse is present.'},
   {id:'lbbb',rhythm:'lbbb',
-    scene:'Known LBBB, no chest pain, stable observations.',
+    scene:'70-year-old at a medication review. An ECG from 2019 is on file. No pain, no breathlessness. BP 136/80.',
     txPrompt:'Most appropriate treatment?',
     txCorrect:['observe'],
     txOpts:['observe','pci','lyse','aspirin','pace','amiodarone','defib','cardiovert'],
     txWhy:'Isolated LBBB in a well patient is not an arrest rhythm. New LBBB with ischaemic symptoms is treated as a STEMI equivalent — this patient has neither pain nor instability.'},
   {id:'rbbb',rhythm:'rbbb',
-    scene:'Incidental RBBB, no distress.',
+    scene:'51-year-old, insurance medical. Feels well, trains twice a week. BP 124/76.',
     txPrompt:'Most appropriate treatment?',
     txCorrect:['observe'],
     txOpts:['observe','pace','pci','amiodarone','defib','cardiovert','atropine','lyse'],
     txWhy:'RBBB alone does not require pacing or reperfusion. Look for a cause if it is new, but do not shock or lyse.'},
   {id:'lad-stemi',rhythm:'nsr',isch:{terr:'lad',pat:'stemi',sev:0.9},show12:true,
-    scene:'Crushing chest pain for 40 minutes. Sweaty. Pulse present, BP 110/70.',
-    txPrompt:'The 12-lead shows ST elevation. Time-critical treatment?',
+    scene:'55-year-old man, crushing central pain for 40 minutes, sweating, frightened. Pulse present. BP 110/70.',
+    txPrompt:'Time-critical treatment?',
     txCorrect:['pci'],
     txOpts:['pci','lyse','aspirin','heparin','gtn','defib','cardiovert','observe'],
     txWhy:'STEMI needs immediate reperfusion. Emergency PCI (stent) is first-line if the cath lab can be reached in time. Give aspirin on the way. Thrombolysis only if PCI will be delayed beyond local time targets.'},
   {id:'rca-stemi',rhythm:'nsr',isch:{terr:'rca',pat:'stemi',sev:0.85},show12:true,
-    scene:'Inferior chest pain, nausea, BP 96/60. Pulse present.',
-    txPrompt:'The 12-lead shows ST elevation. Time-critical treatment?',
+    scene:'61-year-old woman, epigastric pain and vomiting for an hour, looks washed out. Pulse present. BP 96/60.',
+    txPrompt:'Time-critical treatment?',
     txCorrect:['pci'],
     txOpts:['pci','lyse','fluids','atropine','gtn','defib','cardiovert','observe'],
     txWhy:'Inferior STEMI is still a primary-PCI case. Avoid routine GTN if right-ventricular infarction is possible (preload-dependent). Fluids may support an RV infarct, but they do not open the artery.'},
   {id:'nste',rhythm:'nsr',isch:{terr:'lad',pat:'nste',sev:0.8},show12:true,
-    scene:'Crescendo angina, now pain-free. BP 138/84. Troponin pending.',
+    scene:'73-year-old, stuttering chest pressure walking to the shops; now sitting, pain almost gone. BP 138/84. Bloods pending.',
     txPrompt:'Immediate treatment?',
     txCorrect:['aspirin','heparin'],
     txOpts:['aspirin','heparin','pci','lyse','gtn','defib','cardiovert','observe'],
@@ -1472,8 +1708,8 @@ function applyTherapy(txId,ok,final){
     fx.timers.push(setTimeout(function(){fx.locked=false;document.body.classList.remove('tx-busy');},Math.max(600,plan.flatMs||0)));
   }
 }
-function initRhythm(){var bar=document.getElementById('rbar');RHYTHMS.forEach(function(r){var b=document.createElement('button');b.type='button';b.className='rbtn'+(r.crit?' crit':'');b.textContent=r.name;b.dataset.id=r.id;if(r.id===S.rhythm.id)b.classList.add('active');b.addEventListener('click',function(){if(quiz.on)quizGuess(r.id);else selRhythm(r);});bar.appendChild(b);});}
-function selRhythm(r){S.rhythm=r;S.bpm=r.bpm;S.pr=r.pr;S.qrs=r.qrs;S.qt=r.qt;S.st=r.st;S.tAmp=r.tAmp;S.pAmp=r.pAmp;gen.reset();lastBeatCnt=0;syncSliders();hydrateTraces(800);document.getElementById('riName').textContent=r.name;document.getElementById('riDesc').textContent=r.desc;var p12n=document.getElementById('p12rname');if(p12n)p12n.textContent=r.name;var tEl=document.getElementById('riTags');tEl.textContent='';r.tags.forEach(function(t){var span=document.createElement('span');var bad=t.indexOf('LIFE')>=0||t.indexOf('EMERG')>=0||t.indexOf('CPR')>=0;span.className='rtag'+(bad?' d':'');span.textContent=t;tEl.appendChild(span);});document.querySelectorAll('#rbar .rbtn').forEach(function(b){b.classList.toggle('active',b.dataset.id===r.id);b.classList.remove('q-wrong','q-right');});document.getElementById('rinfoBox').style.borderTop=r.crit?'2px solid rgba(255,68,102,.5)':'';}
+function initRhythm(){var bar=document.getElementById('rbtns')||document.getElementById('rbar');RHYTHMS.forEach(function(r){var b=document.createElement('button');b.type='button';b.className='rbtn'+(r.crit?' crit':'');b.textContent=r.name;b.dataset.id=r.id;if(r.id===S.rhythm.id)b.classList.add('active');b.addEventListener('click',function(){if(quiz.on)quizGuess(r.id);else selRhythm(r);});bar.appendChild(b);});}
+function selRhythm(r){S.rhythm=r;S.bpm=r.bpm;S.pr=r.pr;S.qrs=r.qrs;S.qt=r.qt;S.st=r.st;S.tAmp=r.tAmp;S.pAmp=r.pAmp;gen.reset();lastBeatCnt=0;syncSliders();hydrateTraces(800);document.getElementById('riName').textContent=r.name;document.getElementById('riDesc').textContent=r.desc;var now=document.getElementById('rNow');if(now)now.textContent=r.name;var p12n=document.getElementById('p12rname');if(p12n)p12n.textContent=r.name;var tEl=document.getElementById('riTags');tEl.textContent='';r.tags.forEach(function(t){var span=document.createElement('span');var bad=t.indexOf('LIFE')>=0||t.indexOf('EMERG')>=0||t.indexOf('CPR')>=0;span.className='rtag'+(bad?' d':'');span.textContent=t;tEl.appendChild(span);});document.querySelectorAll('#rbar .rbtn').forEach(function(b){b.classList.toggle('active',b.dataset.id===r.id);b.classList.remove('q-wrong','q-right');});document.getElementById('rinfoBox').style.borderTop=r.crit?'2px solid rgba(255,68,102,.5)':'';setRhythmsOpen(false);}
 function quizSetFb(cls,txt){var el=document.getElementById('qFb');if(!el)return;el.className='q-fb '+(cls||'info');el.textContent=txt;}
 function quizSyncNext(){
   var n=document.getElementById('qNext');
@@ -1501,9 +1737,9 @@ function quizApplyCase(c){
   document.querySelectorAll('#rbar .rbtn').forEach(function(b){b.classList.remove('active','q-wrong','q-right');});
   document.getElementById('rinfoBox').style.borderTop='';
   var p12n=document.getElementById('p12rname');if(p12n)p12n.textContent='Identify this rhythm';
-  if(c.isch)applyIsch({terr:c.isch.terr,pat:c.isch.pat,sev:c.isch.sev});
+  if(c.isch)applyIsch({terr:c.isch.terr,pat:c.isch.pat,sev:c.isch.sev,keepView:quiz.view12!=null});
   else applyIsch({terr:'off'});
-  set12Lead(!!c.show12);
+  set12Lead(quiz.view12!=null?!!quiz.view12:!!c.show12);
   hydrateTraces(1000);
 }
 function fillTxBar(c){
@@ -1526,6 +1762,7 @@ function quizNext(){
   document.body.classList.remove('quiz-tx','quiz-revealed','quiz-done');
   if(quiz.i>=QUIZ_LEN){quizFinish();return;}
   quiz.phase='id';
+  quiz.view12=null;
   var c=quiz.deck[quiz.i]||QUIZ_CASES[0];
   quiz.case=c;quiz.answer=c.rhythm;quiz.lastId=c.id;quiz.left=2;quiz.revealed=false;
   var kick=document.getElementById('qKicker');if(kick)kick.textContent='You are taking a quiz · Rhythm';
@@ -1534,7 +1771,7 @@ function quizNext(){
   quizApplyCase(c);
   quizUpdateMeta();
   quizSyncNext();
-  quizSetFb('info','Choose a rhythm from the bar below. You have 2 guesses.');
+  quizSetFb('info','Choose a rhythm from the bar below. Toggle 12 Lead / 3 Lead in the header anytime.');
   quizRelayout();
 }
 function quizFinish(){
@@ -1649,8 +1886,9 @@ function quizRelayout(){
 }
 function startQuiz(){
   if(quiz.on)return;
+  setMenuOpen(false);setRhythmsOpen(false);setIschOpen(false);
   quiz.on=true;quiz.correct=0;quiz.asked=0;quiz.lastId=null;quiz.prev12=show12;quiz.case=null;
-  quiz.idCorrect=0;quiz.txCorrect=0;quiz.i=0;quiz.deck=shuffle(QUIZ_CASES).slice(0,QUIZ_LEN);
+  quiz.idCorrect=0;quiz.txCorrect=0;quiz.i=0;quiz.view12=null;quiz.deck=shuffle(QUIZ_CASES).slice(0,QUIZ_LEN);
   document.body.classList.add('quiz-on');
   document.body.classList.remove('quiz-tx','quiz-revealed','quiz-done');
   document.getElementById('rbarLbl').textContent='Guess';
@@ -1661,6 +1899,7 @@ function startQuiz(){
 }
 function exitQuiz(){
   if(!quiz.on)return;
+  setRhythmsOpen(false);setIschOpen(false);
   quiz.on=false;quiz.revealed=false;quiz.phase='id';quiz.case=null;
   clearFx();
   document.body.classList.remove('quiz-on','quiz-revealed','quiz-tx','quiz-done','tx-busy');
@@ -1670,6 +1909,106 @@ function exitQuiz(){
   set12Lead(!!quiz.prev12);
   selRhythm(S.rhythm);
   quizRelayout();
+}
+function syncScrim(){
+  var scrim=document.getElementById('navScrim'),hdr=document.getElementById('hdr'),rbar=document.getElementById('rbar');
+  if(!scrim)return;
+  var on=(hdr&&hdr.classList.contains('menu-open'))||(rbar&&rbar.classList.contains('rhythms-open'));
+  scrim.classList.toggle('on',!!on);
+}
+function setIschOpen(on){
+  var bar=document.getElementById('rbar'),btn=document.getElementById('btnIsch'),hdr=document.getElementById('hdr'),rbtn=document.getElementById('btnRhythms');
+  if(bar)bar.classList.toggle('isch-open',!!on);
+  if(btn)btn.setAttribute('aria-expanded',on?'true':'false');
+  if(on){
+    if(bar)bar.classList.remove('rhythms-open');
+    if(rbtn)rbtn.setAttribute('aria-expanded','false');
+    if(hdr)hdr.classList.remove('menu-open');
+  }
+  syncScrim();
+}
+function setMenuOpen(on){
+  var hdr=document.getElementById('hdr'),btn=document.getElementById('btnMenu'),bar=document.getElementById('rbar');
+  if(on){
+    if(bar){bar.classList.remove('rhythms-open');bar.classList.remove('isch-open');}
+    var rbtn=document.getElementById('btnRhythms'),ib=document.getElementById('btnIsch');
+    if(rbtn)rbtn.setAttribute('aria-expanded','false');
+    if(ib)ib.setAttribute('aria-expanded','false');
+  }
+  if(hdr)hdr.classList.toggle('menu-open',on);
+  if(btn){btn.setAttribute('aria-expanded',on?'true':'false');btn.setAttribute('aria-label',on?'Close menu':'Open menu');}
+  syncScrim();
+}
+function setRhythmsOpen(on){
+  var bar=document.getElementById('rbar'),btn=document.getElementById('btnRhythms'),hdr=document.getElementById('hdr'),ib=document.getElementById('btnIsch');
+  if(bar)bar.classList.toggle('rhythms-open',!!on);
+  if(btn)btn.setAttribute('aria-expanded',on?'true':'false');
+  if(on){
+    if(bar)bar.classList.remove('isch-open');
+    if(ib)ib.setAttribute('aria-expanded','false');
+    if(hdr)hdr.classList.remove('menu-open');
+  }
+  syncScrim();
+}
+function initMobile(){
+  var menu=document.getElementById('btnMenu'),scrim=document.getElementById('navScrim'),rhythms=document.getElementById('btnRhythms'),ischBtn=document.getElementById('btnIsch');
+  if(menu)menu.addEventListener('click',function(){
+    var hdr=document.getElementById('hdr');
+    setMenuOpen(!(hdr&&hdr.classList.contains('menu-open')));
+  });
+  if(rhythms)rhythms.addEventListener('click',function(){
+    var bar=document.getElementById('rbar');
+    setRhythmsOpen(!(bar&&bar.classList.contains('rhythms-open')));
+  });
+  if(ischBtn)ischBtn.addEventListener('click',function(){
+    var bar=document.getElementById('rbar');
+    setIschOpen(!(bar&&bar.classList.contains('isch-open')));
+  });
+  var rnow=document.getElementById('rNow');
+  if(rnow)rnow.addEventListener('click',function(){
+    var bar=document.getElementById('rbar');
+    setRhythmsOpen(!(bar&&bar.classList.contains('rhythms-open')));
+  });
+  if(scrim)scrim.addEventListener('click',function(){
+    setRhythmsOpen(false);
+    setIschOpen(false);
+    setMenuOpen(false);
+  });
+  ['btnPause','btnSound','btnAnnot','btnGrid','btnSettings'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.addEventListener('click',function(){setMenuOpen(false);});
+  });
+  suggestLandscapeOnce();
+}
+function isPortraitPhone(){
+  return !!(window.matchMedia&&window.matchMedia('(max-width:900px) and (orientation: portrait)').matches);
+}
+function suggestLandscapeOnce(){
+  var el=document.getElementById('orientHint'),ok=document.getElementById('orientHintOk'),scrim=document.getElementById('orientScrim');
+  if(!el)return;
+  var dismissed=false;
+  function dismiss(){
+    dismissed=true;
+    el.classList.remove('show');
+    el.setAttribute('hidden','');
+    if(scrim){scrim.classList.remove('show');scrim.setAttribute('hidden','');}
+    document.body.classList.remove('orient-on');
+  }
+  if(ok)ok.addEventListener('click',dismiss);
+  if(scrim)scrim.addEventListener('click',dismiss);
+  function hideIfLandscape(){if(!isPortraitPhone())dismiss();}
+  if(window.matchMedia){
+    var land=window.matchMedia('(orientation: landscape)');
+    if(land.addEventListener)land.addEventListener('change',function(e){if(e.matches)dismiss();});
+    else if(land.addListener)land.addListener(function(e){if(e.matches)dismiss();});
+  }
+  window.addEventListener('orientationchange',hideIfLandscape);
+  window.addEventListener('resize',hideIfLandscape);
+  if(!isPortraitPhone())return;
+  el.removeAttribute('hidden');
+  el.classList.add('show');
+  if(scrim){scrim.removeAttribute('hidden');scrim.classList.add('show');}
+  document.body.classList.add('orient-on');
 }
 function initQuiz(){
   document.getElementById('btnQuiz').addEventListener('click',function(){if(quiz.on)exitQuiz();else startQuiz();});
@@ -1697,7 +2036,10 @@ function toggleUI(k){
   if(k==='cond'){
     S.showCond=togSt[k];
     var ph=document.querySelector('.phases');
-    if(ph)ph.style.display=S.showCond?'':'none';
+    if(ph){
+      if(S.showCond)ph.style.removeProperty('display');
+      else ph.style.display='none';
+    }
   }
   var key=k.charAt(0).toUpperCase()+k.slice(1),el=document.getElementById('tog'+key);
   if(el){el.classList.toggle('on',togSt[k]);el.setAttribute('aria-pressed',togSt[k]?'true':'false');}
@@ -1762,6 +2104,11 @@ function initSettings(){function bind(sid,did,key,xf,fmt){var sl=document.getEle
     if(e.key==='Escape'){
       var spEl=document.getElementById('sp'),sovEl=document.getElementById('sov');
       if(spEl&&spEl.classList.contains('open')){spEl.classList.remove('open');if(sovEl)sovEl.classList.remove('open');return;}
+      var rbarEl=document.getElementById('rbar');
+      if(rbarEl&&rbarEl.classList.contains('isch-open')){setIschOpen(false);return;}
+      if(rbarEl&&rbarEl.classList.contains('rhythms-open')){setRhythmsOpen(false);return;}
+      var hdrEl=document.getElementById('hdr');
+      if(hdrEl&&hdrEl.classList.contains('menu-open')){setMenuOpen(false);return;}
       if(show12)toggle12Lead();
     }else if(!typing&&(e.key===' '||e.code==='Space')){
       e.preventDefault();
@@ -1770,7 +2117,7 @@ function initSettings(){function bind(sid,did,key,xf,fmt){var sl=document.getEle
   });}
 window.addEventListener('load',function(){
   traces=[new Trace('c1','w1','I'),new Trace('c2','w2','II'),new Trace('c3','w3','ART')];
-  initRhythm();initSettings();initIsch();initQuiz();syncSliders();selRhythm(RHYTHMS[0]);
+  initRhythm();initSettings();initIsch();initQuiz();initMobile();syncSliders();selRhythm(RHYTHMS[0]);
   for(var li=0;li<3;li++){
     (function(idx){
       var sel=document.getElementById('selLead'+idx);
