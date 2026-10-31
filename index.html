@@ -51,10 +51,10 @@ body{display:flex;flex-direction:column}
 #hc{display:block;width:100%;height:100%;max-width:100%;max-height:100%;cursor:grab}
 #hc:active{cursor:grabbing}
 .clab{position:absolute;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.15);pointer-events:none;color:#dde}
-.hint{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);font-size:9px;color:rgba(255,255,255,.22);pointer-events:none;z-index:5}
+.hint{font-size:9px;color:rgba(255,255,255,.22);pointer-events:none;text-align:center;line-height:1.3}
 #errBox{display:none;position:absolute;inset:0;background:rgba(6,11,24,.95);color:#ff4466;font-size:12px;padding:20px;flex-direction:column;gap:8px;align-items:center;justify-content:center;text-align:center}
-.hctrls{position:absolute;inset:0;z-index:30;pointer-events:none}
-.ctr-btn{position:absolute;top:8px;right:8px;padding:6px 12px;background:rgba(6,11,24,0.92);border:1px solid rgba(255,255,255,.28);border-radius:5px;color:rgba(255,255,255,.8);font-size:10px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.4px;backdrop-filter:blur(4px);z-index:31;white-space:nowrap;pointer-events:auto}
+.hfoot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px 8px 8px;flex-shrink:0;background:#020408;border-top:1px solid rgba(255,255,255,.06)}
+.ctr-btn{padding:6px 12px;background:rgba(6,11,24,0.92);border:1px solid rgba(255,255,255,.28);border-radius:5px;color:rgba(255,255,255,.8);font-size:10px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.4px;white-space:nowrap}
 .ctr-btn:hover{background:rgba(0,255,136,.12);border-color:rgba(0,255,136,.4);color:#00ff88}
 
 .phases{display:flex;gap:7px;flex-wrap:wrap;padding:5px 11px;background:#0a1020;border-top:1px solid rgba(255,255,255,.07)}
@@ -203,11 +203,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;heigh
 .isch{display:none}
 .rbar.isch-open .isch{display:flex;flex:1 1 auto;min-width:0;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 10px;background:rgba(255,68,102,.08);border:1px solid rgba(255,68,102,.35);border-left:none;border-radius:0 20px 20px 0;touch-action:pan-x}
 .rbar.isch-open .isch::-webkit-scrollbar{display:none}
-.rbar.isch-open .isch-h{margin:0;flex:1 1 80px;min-width:56px}
+.rbar.isch-open .isch-h{margin:0;flex:1 0 180px;min-width:160px}
 .rbar.isch-open .isch-h .ih{display:none}
+.rbar.isch-open .isch-sev{flex:1;min-width:140px}
+.rbar.isch-open .isch-sev input{flex:1;min-width:140px;width:100%}
 .rbar.isch-open .isch-row{margin:0;flex-wrap:nowrap;flex-shrink:0;gap:3px}
 .rbar.isch-open .isch-note{display:none}
 .rbar.isch-open .ibtn{padding:1px 7px;min-height:0;font-size:10px;flex-shrink:0}
+.rbar.isch-open:not(.isch-step-terr) #ischTerrRow,
+.rbar.isch-open:not(.isch-step-terr) .isch-h{display:none}
 .isch-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
 .isch-h .ih{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#3d4d6a}
 .isch-sev{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
@@ -337,8 +341,8 @@ html,body{overscroll-behavior:none}
        (orientation:landscape) and (max-height:500px){
   .hdr{padding:2px 8px;padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right));padding-top:max(2px,env(safe-area-inset-top));gap:6px}
   .hicon{width:22px;height:22px;font-size:11px}
-  .hfull,.pulse-dot,.hbrand p{display:none}
-  .hbrand h1{font-size:12px}
+  .hfull,.hwide,.pulse-dot,.hbrand p{display:none}
+  .hbrand h1{font-size:12px;display:none}
   .mvit{flex-direction:row;align-items:baseline;gap:8px;margin-left:2px}
   .mvit-hr{font-size:13px}
   .mvit-bp{font-size:12px}
@@ -349,7 +353,7 @@ html,body{overscroll-behavior:none}
   .rbar.isch-open .imenu-btn{min-height:32px}
   .rbar.isch-open .ibtn{min-height:0;padding:1px 6px}
   .main{flex-direction:row}
-  .lp{flex:0 0 36%;width:36%;height:auto;min-height:0;border-bottom:none;border-right:1px solid rgba(255,255,255,.1)}
+  .lp{flex:0 0 32%;width:32%;height:auto;min-height:0;border-bottom:none;border-right:1px solid rgba(255,255,255,.1)}
   .hwrap{padding:0}
   .phases,.rinfo,.hint,.sheet-hd,.tsub,.trII{display:none!important}
   .rp{flex:1 1 0;width:auto;min-width:0}
@@ -358,7 +362,8 @@ html,body{overscroll-behavior:none}
   .trI,.trART{flex:1 1 0;min-height:0}
   .tlabel{width:42px}
   .lead-select{width:42px;font-size:13px;padding:2px 0}
-  .ctr-btn{top:6px;right:6px;padding:4px 8px;font-size:9px}
+  .ctr-btn{padding:4px 8px;font-size:9px}
+  .hfoot{padding:4px 6px 5px;gap:2px}
   .rbar{padding:3px 8px;padding-bottom:max(3px,env(safe-area-inset-bottom));padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
   .rnow{font-size:12px}
   .rbtn{min-height:32px;padding:5px 8px;font-size:11px}
@@ -373,22 +378,55 @@ html,body{overscroll-behavior:none}
   .q-fb.info{display:none}
   .q-actions{width:auto;flex-shrink:0}
   .qbtn{flex:0 1 auto;min-height:30px;min-width:80px;padding:4px 10px}
-  .quiz-on .rbtns{grid-template-columns:repeat(5,1fr);max-height:none}
-  .quiz-on.quiz-tx #tbar{grid-template-columns:repeat(4,1fr);max-height:none}
+  .quiz-on .rbtns{grid-template-columns:repeat(4,1fr);max-height:none}
+  .quiz-on.quiz-tx #tbar{grid-template-columns:repeat(3,1fr);max-height:none}
   .p12grid{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,minmax(0,1fr));grid-template-areas:"i avr v1 v4" "ii avl v2 v5" "iii avf v3 v6";overflow:hidden}
   .p12strip{height:40px}
   .p12bar{padding:2px 6px}
   .p12lbl{font-size:9px;padding:1px 4px}
   #txFx{top:6px;right:6px;left:6px;padding:6px 8px}
+  .rbar.isch-open .isch-h{flex:1 0 140px;min-width:120px}
+}
+@media (orientation:landscape) and (max-width:700px){
+  .lp{flex:0 0 28%;width:28%}
+  body.lead12 .lp{flex:0 0 18%;width:18%}
+  .q-scene{display:none}
+  .hdr{padding-top:max(2px,env(safe-area-inset-top))}
 }
 @media (max-width:480px){
-  .hfull{display:none}
-  .pulse-dot{display:none}
-  .rbar.isch-open .imenu-btn{padding:8px 8px;font-size:11px}
+  .hfull,.hwide,.pulse-dot{display:none}
+  .hbrand h1{display:none}
+  .hicon{width:22px;height:22px;font-size:11px}
+  .hdr{gap:4px;padding:4px 8px;padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+  .mvit{flex-direction:row;align-items:baseline;gap:6px;margin-left:2px}
+  .mvit-hr{font-size:12px}
+  .mvit-bp{font-size:11px}
+  .hquick{gap:4px}
+  .hquick .hbtn{padding:5px 7px;font-size:11px}
+  .menu-btn{width:36px;height:36px}
+  .lp{flex:1.5 1 0}
+  .rp{flex:2 1 0}
+  .tlabel{width:42px}
+  .lead-select{width:40px;font-size:14px;padding:3px 0}
+  .rbar{gap:6px;padding:6px 8px;padding-bottom:max(6px,env(safe-area-inset-bottom))}
+  .imenu-btn,.rmenu-btn{min-height:36px}
+  .menu-btn,.rmenu-btn{width:36px;height:36px}
+  .rbar.isch-open .imenu-btn{min-height:36px;padding:6px 8px;font-size:11px}
+  .rbtn{min-height:36px;padding:6px 10px;font-size:11px}
+  .qbar{padding:4px 8px}
+  .q-scene{max-height:1.4em;overflow:hidden}
+  .q-prompt{font-size:13px}
+  .qbtn{min-height:36px}
+  .quiz-on .rbtns{max-height:28dvh;gap:4px}
+  .p12grid{grid-template-rows:repeat(6,minmax(44px,1fr))}
+  .p12strip{height:44px}
+  .orient-hint{width:min(220px,calc(100vw - 32px));padding:16px 14px;gap:10px}
+  .orient-hint p{font-size:13px}
+  #txFx{left:6px;right:6px;padding:6px 8px}
 }
 @media (max-width:380px){
-  .rbar.isch-open .isch-h{display:none}
   .rbar.isch-open .imenu-btn{padding:6px 7px;font-size:10px}
+  .hquick .hbtn{padding:4px 6px;font-size:10px}
 }
 </style>
 </head>
@@ -401,14 +439,14 @@ html,body{overscroll-behavior:none}
     <span class="mvit-bp" id="mBPv">120/80</span>
   </div>
   <nav class="hnav" id="hnav">
-    <button type="button" class="hbtn" id="btnPause">&#9646;&#9646; Pause</button>
-    <button type="button" class="hbtn" id="btnSound">&#128266; Sound</button>
+    <button type="button" class="hbtn" id="btnPause">&#9646;&#9646; Pause ECG</button>
+    <button type="button" class="hbtn" id="btnSound">&#128266; Heart Sound</button>
     <button type="button" class="hbtn" id="btnAnnot">Annot</button>
     <button type="button" class="hbtn" id="btnGrid">Grid</button>
     <button type="button" class="hbtn" id="btnSettings">&#9881; Settings</button>
   </nav>
   <div class="hquick">
-    <button type="button" class="hbtn" id="btn12lead">12 Lead</button>
+    <button type="button" class="hbtn" id="btn12lead">12<span class="hwide"> Lead</span></button>
     <button type="button" class="hbtn" id="btnQuiz">Quiz</button>
     <button type="button" class="menu-btn" id="btnMenu" aria-label="Open menu" aria-expanded="false" aria-controls="hnav">&#9776;</button>
   </div>
@@ -429,10 +467,6 @@ html,body{overscroll-behavior:none}
     <div class="hwrap" id="hwrap">
       <canvas id="hc"></canvas>
       <div id="errBox"></div>
-      <div class="hint" id="hHint">Drag to rotate &bull; Scroll to zoom</div>
-      <div class="hctrls">
-        <button type="button" class="ctr-btn" id="btnCentre" title="Reset view">&#8853; Centre</button>
-      </div>
       <div id="ischBadge"></div>
       <div id="txFlash"></div>
       <div id="txFx">
@@ -440,6 +474,10 @@ html,body{overscroll-behavior:none}
         <div class="tx-fx-n" id="txFxN"></div>
         <div class="tx-fx-s" id="txFxS"></div>
       </div>
+    </div>
+    <div class="hfoot">
+      <button type="button" class="ctr-btn" id="btnCentre" title="Reset view">&#8853; Recentre</button>
+      <div class="hint" id="hHint">Drag to rotate &bull; Scroll to zoom</div>
     </div>
     <div class="phases">
       <div class="ph" id="phSA"><span class="d" style="border-color:#ffaa00"></span>SA</div>
@@ -604,6 +642,17 @@ html,body{overscroll-behavior:none}
   <div class="rbar-tools">
     <button type="button" class="imenu-btn" id="btnIsch" aria-label="Ischaemia" aria-expanded="false" aria-controls="ischBox">Ischaemia</button>
     <div class="isch" id="ischBox">
+      <div class="isch-row" id="ischPatRow">
+        <button type="button" class="ibtn pat" data-pat="angina">Angina</button>
+        <button type="button" class="ibtn pat" data-pat="nste">NSTEMI</button>
+        <button type="button" class="ibtn pat" data-pat="stemi">STEMI</button>
+      </div>
+      <div class="isch-row" id="ischTerrRow">
+        <button type="button" class="ibtn" data-terr="lad" title="Left anterior descending">LAD</button>
+        <button type="button" class="ibtn" data-terr="rca" title="Right coronary artery">RCA</button>
+        <button type="button" class="ibtn" data-terr="lcx" title="Left circumflex">LCx</button>
+        <button type="button" class="ibtn" data-terr="lm" title="Left main coronary artery">LM</button>
+      </div>
       <div class="isch-h">
         <span class="ih">Severity</span>
         <div class="isch-sev">
@@ -611,18 +660,7 @@ html,body{overscroll-behavior:none}
           <span class="sval" id="dIsch">80%</span>
         </div>
       </div>
-      <div class="isch-row" id="ischPatRow">
-        <button type="button" class="ibtn pat on" data-pat="stemi">STEMI</button>
-        <button type="button" class="ibtn pat" data-pat="nste">NSTEMI</button>
-      </div>
-      <div class="isch-row" id="ischTerrRow">
-        <button type="button" class="ibtn on" data-terr="off">Off</button>
-        <button type="button" class="ibtn" data-terr="lad" title="Left anterior descending">LAD</button>
-        <button type="button" class="ibtn" data-terr="rca" title="Right coronary artery">RCA</button>
-        <button type="button" class="ibtn" data-terr="lcx" title="Left circumflex">LCx</button>
-        <button type="button" class="ibtn" data-terr="lm" title="Left main coronary artery">LM</button>
-      </div>
-      <div class="isch-note" id="ischNote">Off — normal ST/T in all leads. Pick a coronary artery to apply regional ischaemia.</div>
+      <div class="isch-note" id="ischNote">Pick a coronary artery to apply NSTEMI.</div>
     </div>
   </div>
   <button type="button" class="rmenu-btn" id="btnRhythms" aria-label="All rhythms" aria-expanded="false" aria-controls="rbtns">All</button>
@@ -670,7 +708,8 @@ var RHYTHMS=[
 {id:'lbbb',name:'LBBB',bpm:70,pAmp:1,pr:160,qrs:145,qt:460,qrsAmp:1,st:0,tAmp:1,type:'lbbb',irr:false,crit:false,desc:'QRS >=120 ms: broad notched R lateral, QS in V1, discordant T-waves. New LBBB may be STEMI equivalent.',tags:['QRS: >=120 ms','Notched R lateral','New = STEMI?']},
 {id:'rbbb',name:'RBBB',bpm:70,pAmp:1,pr:160,qrs:130,qt:440,qrsAmp:1,st:0,tAmp:1,type:'rbbb',irr:false,crit:false,desc:'QRS >=120 ms: RSR prime in V1/V2, broad slurred S laterally. May be normal or indicate PE, RV strain, ASD.',tags:['QRS: >=120 ms','RSR in V1','Broad S lateral']}
 ];
-var S={rhythm:RHYTHMS[0],bpm:70,pr:160,qrs:80,qt:400,st:0,tAmp:1,pAmp:1,gain:10,speed:25,showGrid:false,showAnnot:false,showCond:true,masterIdx:0,isch:{terr:'off',pat:'stemi',sev:0.8}};
+var S={rhythm:RHYTHMS[0],bpm:70,pr:160,qrs:80,qt:400,st:0,tAmp:1,pAmp:1,gain:10,speed:25,showGrid:false,showAnnot:false,showCond:true,masterIdx:0,isch:{terr:'off',pat:'nste',sev:0.8}};
+var ischPicked=false;
 var QUIZ_LEN=10;
 var quiz={on:false,phase:'id',case:null,answer:null,left:2,revealed:false,correct:0,asked:0,lastId:null,prev12:false,deck:[],i:0,idCorrect:0,txCorrect:0,view12:null};
 var fx={active:false,timers:[],flash:0,flatUntil:0,cpr:false,pace:false,pci:false,vigor:1,tint:0,arrest:null,vitals:null,t0:0,pciFrom:0,pciTo:0,lastIsch:0,locked:false,cprN:-1};
@@ -678,27 +717,37 @@ var ISCH_TERR={
   lad:{name:'LAD',artery:'LAD',territory:'Anterior',view:['V2','III'],
     desc:'<b>LAD</b> — Anterior injury: ST elevation V1–V4 (max V2–V3). Reciprocal ST depression II, III, aVF.',
     nste:'<b>LAD NSTE</b> — ST depression and T inversion V1–V4. Subendocardial ischaemia in the LAD territory.',
+    angina:'<b>LAD angina</b> — Mild ST depression and T flattening V1–V4. Demand ischaemia; often transient with pain.',
     ste:{V1:0.7,V2:1,V3:1,V4:0.75},rec:{II:0.7,III:0.9,aVF:0.8},q:{V1:0.55,V2:0.8,V3:0.65}},
   rca:{name:'RCA',artery:'RCA',territory:'Inferior',view:['III','aVL'],
     desc:'<b>RCA</b> — Inferior injury: ST elevation II, III, aVF with III&gt;II. Reciprocal depression in aVL (± I).',
     nste:'<b>RCA NSTE</b> — ST depression and T inversion in II, III, aVF.',
+    angina:'<b>RCA angina</b> — Mild ST depression and T flattening in II, III, aVF.',
     ste:{II:0.75,III:1,aVF:0.9},rec:{I:0.55,aVL:1},q:{III:0.7,aVF:0.55}},
   lcx:{name:'LCx',artery:'LCx',territory:'Lateral / posterior',view:['aVL','V2'],
     desc:'<b>LCx</b> — Lateral injury: ST elevation I, aVL, V5–V6. Reciprocal inferior depression. Posterior wall often mirrored as ST depression V1–V3.',
     nste:'<b>LCx NSTE</b> — ST depression and T inversion I, aVL, V5–V6 (± V1–V3).',
+    angina:'<b>LCx angina</b> — Mild ST depression and T flattening I, aVL, V5–V6.',
     ste:{I:0.9,aVL:1,V5:0.85,V6:0.8},rec:{II:0.7,III:0.85,aVF:0.75,V1:0.7,V2:0.85,V3:0.55},q:{I:0.45,aVL:0.55,V5:0.4,V6:0.35},rBoost:{V1:1.4,V2:1.25}},
   lm:{name:'LM',artery:'Left main',territory:'Extensive anterior',view:['V2','aVR'],
     desc:'<b>Left main</b> — Extensive anterior/lateral ST elevation V1–V6, I, aVL, plus ST elevation in aVR. Reciprocal inferior depression.',
     nste:'<b>Left main NSTE</b> — Widespread ST depression with ST elevation in aVR (severe proximal ischaemia).',
+    angina:'<b>Left main angina</b> — Widespread mild ST depression and T flattening; aVR may show slight elevation.',
     ste:{V1:0.65,V2:1,V3:1,V4:0.9,V5:0.7,V6:0.55,I:0.55,aVL:0.7,aVR:0.7},rec:{II:0.8,III:1,aVF:0.9},q:{V1:0.5,V2:0.75,V3:0.7,V4:0.45},avr:true}
 };
+function ischPatName(pat){
+  if(pat==='stemi')return 'STEMI';
+  if(pat==='angina')return 'Angina';
+  return 'NSTEMI';
+}
 function ischFor(lead){
   var o={st:0,tMul:1,qMul:1,rMul:1,tWide:1};
   var cfg=S.isch;
   if(!cfg||cfg.terr==='off')return o;
   var t=ISCH_TERR[cfg.terr];
   if(!t)return o;
-  var sev=Math.max(0.3,Math.min(1,cfg.sev||0.8)),pat=cfg.pat==='nste'?'nste':'stemi';
+  var sev=Math.max(0.3,Math.min(1,cfg.sev||0.8));
+  var pat=cfg.pat==='stemi'?'stemi':(cfg.pat==='angina'?'angina':'nste');
   var wSte=t.ste[lead]||0,wRec=t.rec[lead]||0,wQ=t.q[lead]||0;
   if(t.rBoost&&t.rBoost[lead])o.rMul=1+(t.rBoost[lead]-1)*sev;
   if(pat==='stemi'){
@@ -707,6 +756,9 @@ function ischFor(lead){
     o.tMul=1+0.9*sev*wSte;
     if(wRec)o.tMul=Math.max(0.2,1-0.7*sev*wRec);
     if(wQ)o.qMul=1+1.8*sev*wQ;
+  }else if(pat==='angina'){
+    if(t.avr&&lead==='aVR'){o.st+=0.12*sev;o.tMul=1.05;}
+    else if(wSte||wRec){o.st-=0.14*sev*(wSte||wRec);o.tMul=0.28+0.22*(1-sev);o.tWide=1.08;}
   }else{
     if(t.avr&&lead==='aVR'){o.st+=0.32*sev;o.tMul=1.1;}
     else if(wSte||wRec){o.st-=0.32*sev*(wSte||wRec);o.tMul=-(0.7+0.5*sev);o.tWide=1.2;}
@@ -1172,7 +1224,7 @@ function audioBurst(ctx,f0,f1,startTime,attack,decay,vol){var osc=ctx.createOsci
 function playHeart(type,bpm){if(!soundOn)return;var ctx=ensureAudio();if(!ctx)return;var t0=ctx.currentTime;var vol=type==='vtach'?0.26:type==='chb'?0.20:type==='vfib'?0.12+Math.random()*0.16:0.32;if(type==='vfib'){audioBurst(ctx,45+Math.random()*25,25,t0,0.002,0.10+Math.random()*0.08,vol);return;}audioBurst(ctx,58,38,t0,0.001,0.17,vol);audioBurst(ctx,75,52,t0+0.15,0.001,0.11,vol*0.58);}
 function playShock(){if(!soundOn)return;var ctx=ensureAudio();if(!ctx)return;var t0=ctx.currentTime;audioBurst(ctx,880,70,t0,0.001,0.16,0.42);audioBurst(ctx,110,36,t0+0.02,0.002,0.32,0.34);}
 function playCpr(){if(!soundOn)return;var ctx=ensureAudio();if(!ctx)return;audioBurst(ctx,68,38,ctx.currentTime,0.001,0.07,0.18);}
-function toggleSound(){soundOn=!soundOn;if(soundOn)ensureAudio();var btn=document.getElementById('btnSound');if(btn){btn.classList.toggle('snd-on',soundOn);btn.textContent=soundOn?'\uD83D\uDD0A Sound':'\uD83D\uDD07 Sound';}}
+function toggleSound(){soundOn=!soundOn;if(soundOn)ensureAudio();var btn=document.getElementById('btnSound');if(btn){btn.classList.toggle('snd-on',soundOn);btn.textContent=soundOn?'\uD83D\uDD0A Heart Sound':'\uD83D\uDD07 Heart Sound';}}
 function updatePhase(eff){
   var tMs=(gen.ph||0)*(60000/eff.bpm),pr=eff.pr,qrs=eff.qrs,qt=eff.qt,type=eff.type;
   var isSA=tMs<pr*0.12,isP=eff.pAmp>0&&tMs>=pr*0.08&&tMs<pr*0.9,isAV=tMs>=pr*0.82&&tMs<pr-10;
@@ -1258,7 +1310,7 @@ function loop(ts){
 function togglePause(){
   paused=!paused;
   var btn=document.getElementById('btnPause');
-  if(btn){btn.classList.toggle('pause-on',paused);btn.textContent=paused?'\u25B6 Resume':'\u23F8 Pause';}
+  if(btn){btn.classList.toggle('pause-on',paused);btn.textContent=paused?'\u25B6 Resume ECG':'\u23F8 Pause ECG';}
   if(!paused)lastTs=null;
 }
 function setHR(delta){
@@ -1291,16 +1343,16 @@ function setLeadTrace(idx,lead){
 }
 function updateIschUI(){
   var cfg=S.isch;
-  if(cfg.pat!=='stemi'&&cfg.pat!=='nste')cfg.pat='stemi';
-  var terr=cfg.terr,pat=cfg.pat,t=ISCH_TERR[terr];
+  if(cfg.pat!=='stemi'&&cfg.pat!=='nste'&&cfg.pat!=='angina')cfg.pat='nste';
+  var terr=cfg.terr,pat=cfg.pat,t=ISCH_TERR[terr],pname=ischPatName(pat);
   document.querySelectorAll('#ischTerrRow .ibtn').forEach(function(b){b.classList.toggle('on',b.dataset.terr===terr);});
-  document.querySelectorAll('#ischPatRow .ibtn').forEach(function(b){b.classList.toggle('on',b.dataset.pat===pat);});
+  document.querySelectorAll('#ischPatRow .ibtn').forEach(function(b){b.classList.toggle('on',ischPicked&&b.dataset.pat===pat);});
   var note=document.getElementById('ischNote');
-  var txt='Off — normal ST/T in all leads. Pick a coronary artery to apply regional ischaemia.';
-  if(t)txt=pat==='nste'?t.nste:t.desc;
+  var txt='Pick a coronary artery to apply '+pname+'.';
+  if(t)txt=pat==='nste'?t.nste:(pat==='angina'?t.angina:t.desc);
   if(note)note.innerHTML=txt;
   var p12i=document.getElementById('p12isch');
-  if(p12i)p12i.textContent=t?((pat==='nste'?'NSTEMI':'STEMI')+' · '+t.name):'';
+  if(p12i)p12i.textContent=t?(pname+' · '+t.name):'';
   var badge=document.getElementById('ischBadge');
   if(badge){
     if(t){badge.style.display='block';badge.textContent=t.artery+' · '+t.territory;}
@@ -1310,12 +1362,12 @@ function updateIschUI(){
     var L=el.getAttribute('data-lead');
     el.classList.remove('ste','rec');
     if(!t)return;
-    if(pat==='nste'){
-      if(t.avr&&L==='aVR')el.classList.add('ste');
-      else if(t.ste[L]||t.rec[L])el.classList.add('rec');
-    }else{
+    if(pat==='stemi'){
       if(t.ste[L])el.classList.add('ste');
       if(t.rec[L])el.classList.add('rec');
+    }else{
+      if(t.avr&&L==='aVR')el.classList.add('ste');
+      else if(t.ste[L]||t.rec[L])el.classList.add('rec');
     }
   });
   var d=document.getElementById('dIsch');
@@ -1385,10 +1437,17 @@ function applyIsch(opts){
 }
 function initIsch(){
   document.querySelectorAll('#ischTerrRow .ibtn').forEach(function(b){
-    b.addEventListener('click',function(){applyIsch({terr:b.dataset.terr});});
+    b.addEventListener('click',function(){
+      applyIsch({terr:S.isch.terr===b.dataset.terr?'off':b.dataset.terr});
+    });
   });
   document.querySelectorAll('#ischPatRow .ibtn').forEach(function(b){
-    b.addEventListener('click',function(){applyIsch({pat:b.dataset.pat});});
+    b.addEventListener('click',function(){
+      ischPicked=true;
+      var bar=document.getElementById('rbar');
+      if(bar)bar.classList.add('isch-step-terr');
+      applyIsch({pat:b.dataset.pat});
+    });
   });
   var sl=document.getElementById('sIsch');
   if(sl)sl.addEventListener('input',function(){S.isch.sev=parseFloat(sl.value)/100;updateIschUI();});
@@ -1411,14 +1470,14 @@ function toggle12Lead(user){
     tr.style.display='none';
     panel.classList.add('open');
     btn.classList.add('on');
-    btn.textContent='\u25C4 3 Lead';
+    btn.innerHTML='\u25C4 3<span class="hwide"> Lead</span>';
     if(!t12Inited)requestAnimationFrame(function(){requestAnimationFrame(init12Lead);});
     else hydrateTraces(200);
   }else{
     panel.classList.remove('open');
     tr.style.display='';
     btn.classList.remove('on');
-    btn.textContent='12 Lead';
+    btn.innerHTML='12<span class="hwide"> Lead</span>';
   }
   if(quiz.on){
     if(user!==false)quiz.view12=show12;
@@ -1556,7 +1615,67 @@ var QUIZ_CASES=[
     txPrompt:'Immediate treatment?',
     txCorrect:['aspirin','heparin'],
     txOpts:['aspirin','heparin','pci','lyse','gtn','defib','cardiovert','observe'],
-    txWhy:'NSTE-ACS: aspirin and anticoagulation, then risk-stratified angiography. Emergency PCI is for ongoing pain, instability, or STEMI. Thrombolysis is not used in NSTEMI.'}
+    txWhy:'NSTE-ACS: aspirin and anticoagulation, then risk-stratified angiography. Emergency PCI is for ongoing pain, instability, or STEMI. Thrombolysis is not used in NSTEMI.'},
+  {id:'pvt',rhythm:'vt',arrest:true,
+    scene:'49-year-old collapsed in the car park. A nurse started CPR as he went down. Unresponsive, no pulse, no breathing.',
+    txPrompt:'Immediate treatment?',
+    txCorrect:['defib'],
+    txOpts:['defib','cpr','cardiovert','adrenaline','amiodarone','atropine','pace','observe'],
+    txWhy:'Pulseless VT is a shockable arrest rhythm, same pathway as VF. Unsynchronised defibrillation now, then high-quality CPR. Synchronised cardioversion cannot lock onto pulseless VT.'},
+  {id:'svt-uns',rhythm:'svt',vitals:{sys:72,dia:48},
+    scene:'31-year-old woman, palpitations then a faint in the supermarket queue. Pale, sweaty, a pulse is still present. BP 72/48.',
+    txPrompt:'This patient has adverse features. Immediate treatment?',
+    txCorrect:['cardiovert'],
+    txOpts:['cardiovert','adenosine','vagal','defib','amiodarone','metoprolol','atropine','observe'],
+    txWhy:'Narrow-complex tachycardia with shock is unstable. Synchronised cardioversion is first-line. Vagal manoeuvres and adenosine are for the stable patient.'},
+  {id:'vt-st',rhythm:'vt',vitals:{sys:128,dia:80},
+    scene:'62-year-old with a known weak heart, palpitations for 20 minutes. Alert, talking, no pain or breathlessness. Pulse present. BP 128/80.',
+    txPrompt:'Most appropriate treatment while stable?',
+    txCorrect:['amiodarone'],
+    txOpts:['amiodarone','cardiovert','defib','adenosine','vagal','adrenaline','pci','observe'],
+    txWhy:'Regular wide-complex tachycardia with a pulse and no adverse features can be treated with amiodarone 300 mg IV. Shock if they become unstable. Adenosine is for regular narrow-complex SVT.'},
+  {id:'brady-ath',rhythm:'brady',vitals:{sys:118,dia:64},
+    scene:'19-year-old rowing scholarship athlete, routine sports medical. Feels well, trains twice a day. BP 118/64.',
+    txPrompt:'Most appropriate treatment?',
+    txCorrect:['observe'],
+    txOpts:['observe','atropine','pace','adrenaline','fluids','adenosine','cardiovert','defib'],
+    txWhy:'Asymptomatic sinus bradycardia in a fit young adult is usually high vagal tone. No atropine and no pacing.'},
+  {id:'af-rvr',rhythm:'afib',bpm:148,vitals:{sys:136,dia:82},
+    scene:'82-year-old, known irregular pulse, faster palpitations since yesterday. Alert, no chest pain, speaking in sentences. BP 136/82.',
+    txPrompt:'Most appropriate next step?',
+    txCorrect:['metoprolol','heparin'],
+    txOpts:['metoprolol','heparin','cardiovert','defib','adenosine','vagal','atropine','pci'],
+    txWhy:'Stable AF with a rapid ventricular rate: rate-control (beta-blocker) and anticoagulation. Do not unsynchronised-shock. Cardioversion is for adverse features or a planned rhythm-control strategy.'},
+  {id:'aflut-st',rhythm:'aflut',bpm:75,vitals:{sys:132,dia:78},
+    scene:'57-year-old, fluttery palpitations for a day after a long-haul flight. Comfortable, no pain. BP 132/78.',
+    txPrompt:'Most appropriate next step?',
+    txCorrect:['heparin','observe'],
+    txOpts:['heparin','observe','cardiovert','defib','adenosine','vagal','atropine','pci'],
+    txWhy:'Stable atrial flutter: anticoagulate and plan rate or rhythm control. Adenosine may briefly reveal flutter waves but does not terminate the circuit. Do not defibrillate a pulse.'},
+  {id:'lcx-stemi',rhythm:'nsr',isch:{terr:'lcx',pat:'stemi',sev:0.9},show12:true,
+    scene:'59-year-old man, sudden tight pain in the left arm and jaw for 25 minutes, diaphoretic. Pulse present. BP 118/74.',
+    txPrompt:'Time-critical treatment?',
+    txCorrect:['pci'],
+    txOpts:['pci','lyse','aspirin','heparin','gtn','defib','cardiovert','observe'],
+    txWhy:'Lateral STEMI still needs immediate reperfusion. Emergency PCI is first-line. Give aspirin on the way. Lysis only if PCI cannot be reached in time.'},
+  {id:'lm-nste',rhythm:'nsr',isch:{terr:'lm',pat:'nste',sev:0.9},show12:true,vitals:{sys:86,dia:54},
+    scene:'66-year-old, crushing pain at rest for an hour that will not settle, grey and clammy. Pulse present. BP 86/54.',
+    txPrompt:'Immediate treatment?',
+    txCorrect:['pci'],
+    txOpts:['pci','lyse','aspirin','heparin','gtn','defib','cardiovert','observe'],
+    txWhy:'Widespread ST depression with aVR elevation and shock is a left-main / proximal-equivalent ACS. This is an emergency angiogram, not thrombolysis. Aspirin is given, but the time-critical step is reperfusion in the lab.'},
+  {id:'angina-lad',rhythm:'nsr',isch:{terr:'lad',pat:'angina',sev:0.7},show12:true,
+    scene:'64-year-old, tight chest walking up the hill to the shops; pain gone after two minutes of rest. Comfortable now. BP 142/86.',
+    txPrompt:'Most appropriate immediate treatment?',
+    txCorrect:['observe','aspirin'],
+    txOpts:['observe','aspirin','pci','lyse','gtn','defib','cardiovert','heparin'],
+    txWhy:'Settled exertional symptoms with mild ST/T change is angina, not a STEMI. Do not lyse or activate primary PCI. Aspirin is reasonable; arrange urgent work-up.'},
+  {id:'nlbbb',rhythm:'lbbb',
+    scene:'63-year-old, crushing central pain for 50 minutes. Last year’s ECG showed a narrow QRS. Sweaty, frightened. Pulse present. BP 108/68.',
+    txPrompt:'Time-critical treatment?',
+    txCorrect:['pci'],
+    txOpts:['pci','lyse','aspirin','observe','pace','amiodarone','defib','cardiovert'],
+    txWhy:'New LBBB with ischaemic symptoms is treated as a STEMI equivalent. Emergency PCI is first-line. Isolated chronic LBBB in a well patient is not.'}
 ];
 function rhythmById(id){
   for(var i=0;i<RHYTHMS.length;i++)if(RHYTHMS[i].id===id)return RHYTHMS[i];
@@ -1612,7 +1731,7 @@ function therapyPlan(tx,c,ok){
   var plan={label:t.name,sub:'',shock:null,flatMs:0,morphDelay:450,morph:null,cpr:false,pace:false,tint:0,vigor:1,pciTo:null};
   if(tx==='defib'){
     plan.shock='unsync';plan.flatMs=720;plan.morphDelay=780;
-    if(ok&&(r==='vf'||type==='vfib')){plan.sub='Unsynchronised shock — VF terminates, organised contraction returns.';plan.morph={rhythm:'nsr',bpm:74,arrest:false,vitals:{sys:110,dia:70}};}
+    if(ok&&(r==='vf'||type==='vfib'||(type==='vtach'&&!pulse))){plan.sub='Unsynchronised shock — shockable arrest terminates, organised contraction returns.';plan.morph={rhythm:'nsr',bpm:74,arrest:false,vitals:{sys:110,dia:70}};}
     else if(pulse){plan.sub='Inappropriate unsynchronised shock on a pulse — myocardium stunned, VF induced.';plan.morph={rhythm:'vf',arrest:true};plan.tint=1;}
     else{plan.sub='No organised rhythm to convert — VF continues. Shock again as soon as charged.';}
   }else if(tx==='cardiovert'){
@@ -1646,7 +1765,8 @@ function therapyPlan(tx,c,ok){
     else if(r==='chb'||r==='brady'){plan.sub='Chronotropy up — a bridge to pacing, not the definitive treatment.';plan.morph={bpm:Math.min(92,cur+24),vitals:{sys:Math.min(130,vs.sys+16),dia:vs.dia}};}
     else{plan.sub='Sympathetic surge — rate and squeeze up, still the wrong primary treatment.';plan.morph={bpm:Math.min(220,cur+28)};}
   }else if(tx==='amiodarone'){
-    if(type==='vtach'&&!ok){plan.sub='Amiodarone is too slow here — unstable VT needs electricity now.';plan.morph={bpm:Math.max(140,cur-8)};}
+    if(ok&&type==='vtach'&&pulse){plan.sub='Amiodarone slows ventricular ectopy — the wide-complex run eases.';plan.morph={bpm:Math.max(100,cur-30)};plan.vigor=0.95;}
+    else if(type==='vtach'&&!ok){plan.sub='Amiodarone is too slow here — unstable VT needs electricity now.';plan.morph={bpm:Math.max(140,cur-8)};}
     else if(!pulse){plan.sub='Antiarrhythmic after shocks — VF is still on the monitor.';}
     else{plan.sub='Little immediate mechanical change.';}
   }else if(tx==='pace'){
@@ -1655,8 +1775,9 @@ function therapyPlan(tx,c,ok){
     else if(r==='brady'){plan.pace=true;plan.sub='Pacing works, but atropine is first-line for sinus bradycardia.';plan.morph={rhythm:'lbbb',bpm:70,qrs:160,vitals:{sys:110,dia:70},pace:true};}
     else{plan.pace=true;plan.sub='Pacing spikes on a heart that did not need a pacemaker.';}
   }else if(tx==='pci'){
-    if(ok&&c.isch&&c.isch.pat==='stemi'){plan.sub='Stent opens the artery — ST elevation falls and the ventricle pinks up.';plan.pciTo=0.06;plan.tint=-1;plan.vigor=1.12;plan.morph={vitals:{sys:120,dia:74},arrest:false};}
+    if(ok){plan.sub='Emergency reperfusion — flow returns and the ventricle pinks up.';plan.pciTo=0.06;plan.tint=-1;plan.vigor=1.12;plan.morph={vitals:{sys:120,dia:74},arrest:false};}
     else if(c.isch&&c.isch.pat==='nste'){plan.sub='Stable NSTE-ACS is not a primary-PCI door-to-balloon case.';}
+    else if(c.isch&&c.isch.pat==='angina'){plan.sub='Settled angina is not a primary-PCI door-to-balloon case.';}
     else{plan.sub='The cath lab does not treat this rhythm.';}
   }else if(tx==='lyse'){
     if(c.isch&&c.isch.pat==='stemi'){plan.sub='Lysis can reopen a coronary, but PCI is faster and first-line if available. Partial ST fall only.';plan.pciTo=0.48;plan.tint=-0.3;}
@@ -1679,14 +1800,15 @@ function therapyPlan(tx,c,ok){
     plan.morph={vitals:{sys:Math.max(46,vs.sys-34),dia:Math.max(28,vs.dia-18)}};
     plan.sub=(c.isch&&c.isch.terr==='rca')?'GTN in inferior / RV infarct — preload collapses, the heart underfills.':'Vasodilation — blood pressure falls, contraction looks weaker.';
   }else if(tx==='metoprolol'){
-    if(type==='afib'&&cur>=140){plan.sub='Beta-blockade in shock — rate may fall, output falls with it.';plan.morph={bpm:Math.max(80,cur-40),vitals:{sys:52,dia:34}};plan.vigor=0.48;plan.tint=1;}
+    if(type==='afib'&&cur>=140&&vs.sys<90){plan.sub='Beta-blockade in shock — rate may fall, output falls with it.';plan.morph={bpm:Math.max(80,cur-40),vitals:{sys:52,dia:34}};plan.vigor=0.48;plan.tint=1;}
+    else if(ok){plan.sub='AV node slowed — ventricular rate falls, filling improves.';plan.morph={bpm:Math.max(80,cur-40),vitals:{sys:Math.min(140,vs.sys+4),dia:vs.dia}};plan.vigor=1.05;}
     else{plan.sub='Rate control — not the immediate priority.';plan.morph={bpm:Math.max(58,cur-18)};}
   }
   return plan;
 }
 function applyTherapy(txId,ok,final){
   clearFx();
-  if(paused){paused=false;lastTs=null;var pb=document.getElementById('btnPause');if(pb){pb.classList.remove('pause-on');pb.textContent='\u23F8 Pause';}}
+  if(paused){paused=false;lastTs=null;var pb=document.getElementById('btnPause');if(pb){pb.classList.remove('pause-on');pb.textContent='\u23F8 Pause ECG';}}
   var plan=therapyPlan(txId,quiz.case,ok);
   fx.active=true;fx.t0=performance.now();fx.ok=ok;fx.vigor=plan.vigor||1;fx.tint=plan.tint||0;
   fx.cpr=!!plan.cpr;fx.pace=!!plan.pace;fx.arrest=null;fx.vitals=null;fx.locked=!final;
@@ -1918,12 +2040,20 @@ function syncScrim(){
 }
 function setIschOpen(on){
   var bar=document.getElementById('rbar'),btn=document.getElementById('btnIsch'),hdr=document.getElementById('hdr'),rbtn=document.getElementById('btnRhythms');
-  if(bar)bar.classList.toggle('isch-open',!!on);
+  if(bar){
+    bar.classList.toggle('isch-open',!!on);
+    if(!on)bar.classList.remove('isch-step-terr');
+  }
   if(btn)btn.setAttribute('aria-expanded',on?'true':'false');
   if(on){
-    if(bar)bar.classList.remove('rhythms-open');
+    ischPicked=false;
+    if(bar){
+      bar.classList.remove('rhythms-open');
+      bar.classList.remove('isch-step-terr');
+    }
     if(rbtn)rbtn.setAttribute('aria-expanded','false');
     if(hdr)hdr.classList.remove('menu-open');
+    updateIschUI();
   }
   syncScrim();
 }
@@ -1962,7 +2092,14 @@ function initMobile(){
   });
   if(ischBtn)ischBtn.addEventListener('click',function(){
     var bar=document.getElementById('rbar');
-    setIschOpen(!(bar&&bar.classList.contains('isch-open')));
+    var open=bar&&bar.classList.contains('isch-open');
+    var on=S.isch&&S.isch.terr!=='off';
+    if(open||on){
+      setIschOpen(false);
+      applyIsch({terr:'off'});
+    }else{
+      setIschOpen(true);
+    }
   });
   var rnow=document.getElementById('rNow');
   if(rnow)rnow.addEventListener('click',function(){
